@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "DefualtCheckIfGrounded", menuName = "Commands/Passive/CheckIfGrounded")]
+[CreateAssetMenu(fileName = "CheckIfGrounded", menuName = "Commands/Passive/CheckIfGrounded")]
 public class CheckIfGrounded : PassiveCommandObject
 {
     List<ContactPoint> allCPs = new List<ContactPoint>();
