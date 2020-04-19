@@ -65,7 +65,6 @@ public class GoUpStairs : PassiveCommandObject
             return false;
         }
 
-        Debug.Log(contactPoint.point);
         if (contactPoint.point.y - agentInputHandler.groundContactPoint.point.y > agentValues.maxStepHeight)
         {
             return false;
@@ -80,8 +79,6 @@ public class GoUpStairs : PassiveCommandObject
 
         Ray ray = new Ray(rayOrigin, agentInputHandler.gravityDirection);
 
-        Debug.Log("raytime");
-        Debug.DrawRay(rayOrigin, agentInputHandler.gravityDirection * agentValues.maxStepHeight, Color.red);
         if (!(contactPoint.otherCollider.Raycast(ray, out hit, agentValues.maxStepHeight)))
         {
             return false;
