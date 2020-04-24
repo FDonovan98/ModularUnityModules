@@ -12,6 +12,6 @@ public class AgentTakesDamage : PassiveCommandObject
     {
         AgentController agentController = agentInputHandler.gameObject.GetComponent<AgentController>();
 
-        agentController.ChangeResourceCount(AgentController.ResourceType.Health, -value);
+        agentController.ChangeResourceCount(ResourceType.Health, -value);
     }
 }

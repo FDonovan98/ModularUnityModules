@@ -54,7 +54,7 @@ public class ChangeResourceOverTime : PassiveCommandObject
 [Serializable]
 public class TypeAndConstraints
 {
-    public AgentController.ResourceType resourceType;
+    public ResourceType resourceType;
     public float changeValue;
     public string areaTag;
 }

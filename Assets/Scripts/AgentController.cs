@@ -4,6 +4,14 @@ using System.Collections;
 
 using UnityEngine.UI;
 
+public enum ResourceType
+{
+    Health,
+    MagazineAmmo,
+    ExtraAmmo,
+    Oxygen
+}
+
 public class AgentController : AgentInputHandler
 {
     public GameObject deathScreen;
@@ -25,13 +33,6 @@ public class AgentController : AgentInputHandler
     [ReadOnly]
     public int currentBulletsInMag = 0;
 
-    public enum ResourceType
-    {
-        Health,
-        MagazineAmmo,
-        ExtraAmmo,
-        Oxygen
-    }
     
     public GameObject[] gameObjectsToDisableForPhoton;
     public Behaviour[] componentsToDisableForPhoton;
@@ -98,7 +99,7 @@ public class AgentController : AgentInputHandler
 
             if (currentOxygen == 0.0f)
             {
-                ChangeResourceCount(AgentController.ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
+                ChangeResourceCount(ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
             }
 
             if (oxygenDisplay != null)
