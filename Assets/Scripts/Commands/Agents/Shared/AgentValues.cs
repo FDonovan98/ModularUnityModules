@@ -7,6 +7,7 @@ public class AgentValues : ScriptableObject
     public float moveAcceleration = 100.0f;
     public bool sprintingIsAToggle;
     public float sprintMultiplier = 2.0f;
+    public float footstepDelay = 1.0f;
 
     [Header("Velocity Degradation")]
     public bool reduceVelocityInAir = true;
@@ -59,8 +60,21 @@ public class AgentValues : ScriptableObject
     [Header("Health")]
     public float maxHealth = 100.0f;
 
+    [Header("Emergency Health Regen")]
+    [Range(0.0f, 100.0f)]
+    public float emergencyRegenThreshold = 20.0f;
+    public float emergencyRegenMaxHealthModifier = 1.5f;
+    public float emergencyRegenDownTickValue = 10.0f;
+    [Range(0.0f, 1.0f)]
+    public float postEmergencyRegenHealthModifier = 0.8f;
+    public float emergencyRegenSpeedMultiplier = 1.5f;
+    public int emergencyRegenUses = 1;
+
     [Header("UI Lag")]
     public bool[] lagUIInAxis = {false, false};
     [Range(0.0f, 1.0f)]
     public float[] UICatchupSpeed = {0.5f, 0.5f};
+
+    [Header("Death Noise")]
+    public AudioClip deathNoise;
 }

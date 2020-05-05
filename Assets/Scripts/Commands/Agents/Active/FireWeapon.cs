@@ -9,6 +9,7 @@ public class FireWeapon : ActiveCommandObject
     {
         keyTable.Add("Primary Fire", primaryFire);
     }
+    
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
         if (agentInputHandler.isLocalAgent)
@@ -38,7 +39,7 @@ public class FireWeapon : ActiveCommandObject
     {
         AgentController agentController = (AgentController)agentInputHandler;
 
-        if (agentInputHandler.allowInput)
+        if (agentInputHandler.allowInput && !agentController.isReloading)
         {
             if (agentInputHandler.timeSinceLastShot > agentInputHandler.currentWeapon.fireRate)
             {
@@ -61,8 +62,10 @@ public class FireWeapon : ActiveCommandObject
 
         AgentController agentController = (AgentController)agentInputHandler;
 
+        agentInputHandler.animationController.SetTrigger("isAttacking");
+
         agentInputHandler.timeSinceLastShot = 0.0f;
 
-        agentController.ChangeResourceCount(ResourceType.MagazineAmmo, -1);
+        agentController.ChangeStat(ResourceType.MagazineAmmo, -1);
     }
 }

@@ -1,11 +1,9 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "DefaultChargeLeap", menuName = "Commands/Active/Charge Leap")]
 public class ChargeLeap : ActiveCommandObject
 {
     [SerializeField] private KeyCode chargeLeap = KeyCode.Space;
-    private Image outerReticle = null;
     private float timeJumpingFor = 0.0f;
 
     protected override void OnEnable()
@@ -15,12 +13,16 @@ public class ChargeLeap : ActiveCommandObject
 
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
-        agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
-        outerReticle = agentInputHandler.gameObject.transform.GetChild(2).GetChild(1).GetChild(0).GetChild(0).GetComponent<Image>();
+        if (agentInputHandler.isLocalAgent)
+        {
+            agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+        }
     }
 
     private void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {   
+        AgentController agentController = (AgentController)agentInputHandler;
+
         if (agentInputHandler.isJumping)
         {
             timeJumpingFor += Time.deltaTime;
@@ -36,20 +38,16 @@ public class ChargeLeap : ActiveCommandObject
             if (Input.GetKey(chargeLeap) && !agentInputHandler.isJumping)
             {
                 agentInputHandler.currentLeapCharge += Time.deltaTime;
-                float percentage = (agentInputHandler.currentLeapCharge / agentValues.leapChargeDuration) * 100;
-                if (percentage >= 100) percentage = 99.9f;
             }
 
             if (Input.GetKeyUp(chargeLeap))
             {
                 if (agentInputHandler.isGrounded)
                 {
-                    agentInputHandler.isJumping = true;
-
                     float jumpImpulse = Mathf.Min(agentInputHandler.currentLeapCharge, agentValues.leapChargeDuration);
 
                     jumpImpulse /= agentValues.leapChargeDuration;
-                    jumpImpulse *= agentValues.leapVelocity;
+                    jumpImpulse *= agentValues.leapVelocity * agentInputHandler.moveSpeedMultiplier;
 
                     Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
                     Camera agentCamera = agent.GetComponent<Camera>();

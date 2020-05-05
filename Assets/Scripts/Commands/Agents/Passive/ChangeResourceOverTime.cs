@@ -11,6 +11,7 @@ public class ChangeResourceOverTime : PassiveCommandObject
     {
         agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
         agentInputHandler.runCommandOnTriggerStay += RunCommandOnTriggerStay;
+        agentInputHandler.runCommandOnTriggerExit += RunCommandOnTriggerExit;
     }
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
@@ -26,8 +27,16 @@ public class ChangeResourceOverTime : PassiveCommandObject
                 {
                     agentController = (AgentController)agentInputHandler;
                 }
-               
-                agentController.ChangeResourceCount(element.resourceType, Time.deltaTime * element.changeValue);
+
+                if (element.resourceType == ResourceType.Health)
+                {
+                    agentController.ChangeStat(element.resourceType, Time.deltaTime * element.changeValue * agentValues.maxHealth / 100);
+                }
+                else
+                {
+                    agentController.ChangeStat(element.resourceType, Time.deltaTime * element.changeValue);
+                }
+                
             }          
         }
     }
@@ -45,7 +54,46 @@ public class ChangeResourceOverTime : PassiveCommandObject
                     agentController = (AgentController)agentInputHandler;
                 } 
 
-                agentController.ChangeResourceCount(element.resourceType, Time.deltaTime * element.changeValue);
+                // Oxygen decrease rate scales with movement speed.
+                if (element.resourceType == ResourceType.Oxygen)
+                {
+                    agentController.ChangeStat(element.resourceType, Time.deltaTime * element.changeValue * agentInputHandler.moveSpeedMultiplier);
+                    
+                    // Updates UI to flag oxy is regenerating.
+                    if (element.changeValue > 0)
+                    {
+                        agentController.oxygenIsRegening = true;
+                        agentController.updateUI(ResourceType.OxygenRegen);
+                    }
+                }
+                else
+                {
+                    agentController.ChangeStat(element.resourceType, Time.deltaTime * element.changeValue);
+                }
+
+            }
+        }
+    }
+
+    void RunCommandOnTriggerExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other)
+    {
+        AgentController agentController = null;
+
+        foreach (TypeAndConstraints element in resourcesToChange)
+        {
+            if (other.gameObject.tag == element.areaTag)
+            {
+                if (agentController == null)
+                {
+                    agentController = (AgentController)agentInputHandler;
+                } 
+
+                // Updates UI to flag oxy is regenerating.
+                if (element.resourceType == ResourceType.Oxygen && element.changeValue > 0)
+                {
+                    agentController.oxygenIsRegening = false;
+                    agentController.updateUI(ResourceType.OxygenRegen);
+                }
             }
         }
     }

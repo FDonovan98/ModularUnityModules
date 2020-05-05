@@ -14,7 +14,10 @@ public class ReloadWeapon : ActiveCommandObject
 
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)
     {
-        agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+        if (agentInputHandler.isLocalAgent)
+        {
+            agentInputHandler.runCommandOnUpdate += RunCommandOnUpdate;
+        }
     }
 
     private void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
@@ -25,11 +28,14 @@ public class ReloadWeapon : ActiveCommandObject
 
             if (CanReload(agentController))
             {
-                AudioSource weaponAudioSource = agentInputHandler.weaponObject.GetComponent<AudioSource>();
-                weaponAudioSource.clip = agentInputHandler.currentWeapon.reloadSound;
-                weaponAudioSource.Play();
+                AudioSource weaponAudioSource = agentInputHandler.weaponObject.GetComponentInChildren<AudioSource>();
+                Debug.Log(weaponAudioSource);
+                weaponAudioSource.PlayOneShot(agentInputHandler.currentWeapon.reloadSound);
 
-                agentInputHandler.StartCoroutine(Reload(weaponAudioSource.clip.length, agentController));
+                agentInputHandler.StartCoroutine(Reload(agentInputHandler.currentWeapon.reloadDuration, agentController));
+
+                agentInputHandler.isReloading = true;
+                agentInputHandler.animationController.SetTrigger("isReloading");
             }
         }
     }
@@ -59,7 +65,9 @@ public class ReloadWeapon : ActiveCommandObject
             bulletsUsed = agentController.currentExtraAmmo;
         }
 
-        agentController.ChangeResourceCount(ResourceType.MagazineAmmo, bulletsUsed);
-        agentController.ChangeResourceCount(ResourceType.ExtraAmmo, -bulletsUsed);
+        agentController.ChangeStat(ResourceType.MagazineAmmo, bulletsUsed);
+        agentController.ChangeStat(ResourceType.ExtraAmmo, -bulletsUsed);
+
+        agentController.isReloading = false;
     }
 }

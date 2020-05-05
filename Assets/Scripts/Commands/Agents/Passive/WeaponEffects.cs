@@ -8,41 +8,8 @@ public class WeaponEffects : PassiveCommandObject
         agentInputHandler.runCommandOnWeaponFired += RunCommandOnWeaponFired;
     }
 
-    void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler)
+    private void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler)
     {
-        PlayGunshot(agentInputHandler);
-        MuzzleFlash(agentInputHandler);
-    }
-
-    void PlayGunshot(AgentInputHandler agentInputHandler)
-    {
-       if (agentInputHandler.currentWeapon.weaponSound != null)
-        {
-            AudioSource weaponAudioSource = agentInputHandler.weaponObject.GetComponent<AudioSource>();
-
-            if (weaponAudioSource == null)
-            {
-                weaponAudioSource = agentInputHandler.weaponObject.AddComponent(typeof(AudioSource)) as AudioSource;
-            }
-
-            weaponAudioSource.clip = agentInputHandler.currentWeapon.weaponSound;
-            weaponAudioSource.Play();
-        } 
-        else
-        {
-            Debug.LogAssertion(agentInputHandler.currentWeapon.name + " is missing a gunshot sound");
-        }
-    }
-
-    void MuzzleFlash(AgentInputHandler agentInputHandler)
-    {
-        if (agentInputHandler.weaponMuzzleFlash != null)
-        {
-            agentInputHandler.weaponMuzzleFlash.Play();
-        }
-        else
-        {
-            Debug.LogAssertion(agentInputHandler.currentWeapon.name + " has no muzzle flash");
-        }
+        
     }
 }

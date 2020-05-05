@@ -30,23 +30,33 @@ public class XZMovement : ActiveCommandObject
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
-
         Vector3 inputMovementVector = GetKeyInput(agent);
 
         if (agentInputHandler.allowInput)
         {
-            inputMovementVector *= agentValues.moveAcceleration * Time.deltaTime;
+            inputMovementVector *= agentValues.moveAcceleration * Time.deltaTime * agentInputHandler.moveSpeedMultiplier;
 
-            if (agentInputHandler.isSprinting)
+            agentInputHandler.agentRigidbody.velocity += inputMovementVector * agentInputHandler.moveSpeedMultiplier;
+            
+            if (inputMovementVector.magnitude > 0)
             {
-                agentRigidbody.velocity += inputMovementVector * agentValues.sprintMultiplier;
+                if (agentInputHandler.footstepSource != null && !agentInputHandler.footstepSource.isPlaying)
+                {
+                    if (agentInputHandler.timeSinceFootstep > agentValues.footstepDelay)
+                    {
+                        PlayFootstep(agentInputHandler);
+                        agentInputHandler.timeSinceFootstep = 0.0f;
+                    }
+                    else
+                    {
+                        agentInputHandler.timeSinceFootstep += Time.deltaTime;
+                    }
+                }
             }
-            else
+            else if (agentInputHandler.footstepSource.clip != null && agentInputHandler.footstepSource.isPlaying)
             {
-                agentRigidbody.velocity += inputMovementVector;
+                CancelFootstep(agentInputHandler);
             }
-
         }
         else
         {
@@ -56,12 +66,22 @@ public class XZMovement : ActiveCommandObject
 
         if (agentInputHandler.isGrounded)
         {
-            VelocityDegradation(agentRigidbody, agentValues.velocityDegradationGrounded, inputMovementVector, agentInputHandler);
+            VelocityDegradation(agentValues.velocityDegradationGrounded, inputMovementVector, agentInputHandler);
         }
         else if (agentValues.reduceVelocityInAir)
         {
-            VelocityDegradation(agentRigidbody, agentValues.velocityDegradationInAir, inputMovementVector, agentInputHandler);
+            VelocityDegradation(agentValues.velocityDegradationInAir, inputMovementVector, agentInputHandler);
         }
+
+        //Animation shenanigans
+        //Layer 8 is Marine
+        if (agent.gameObject.layer == 8)
+        {
+            float movementAngle = Vector3.SignedAngle(agentInputHandler.agentRigidbody.velocity, agent.transform.forward, Vector3.down);
+            agentInputHandler.animationController.SetFloat("runningDirection", movementAngle);
+        }
+        float speed = agentInputHandler.agentRigidbody.velocity.magnitude;
+        agentInputHandler.animationController.SetFloat("speed", speed);
     }
 
     Vector3 GetKeyInput(GameObject agent)
@@ -88,13 +108,13 @@ public class XZMovement : ActiveCommandObject
         return inputMovementVector.normalized;
     }
 
-    void VelocityDegradation(Rigidbody agentRigidbody, float velocityDegradationValue, Vector3 inputMovementVector, AgentInputHandler agentInputHandler)
+    void VelocityDegradation(float velocityDegradationValue, Vector3 inputMovementVector, AgentInputHandler agentInputHandler)
     {
         if (!agentInputHandler.isJumping)
         {
-            Vector3 localVel = agentRigidbody.transform.worldToLocalMatrix * agentRigidbody.velocity;
+            Vector3 localVel = agentInputHandler.agentRigidbody.transform.worldToLocalMatrix * agentInputHandler.agentRigidbody.velocity;
             float RelativeVelDeg = velocityDegradationValue * Time.deltaTime;
-            inputMovementVector = agentRigidbody.transform.worldToLocalMatrix * inputMovementVector;
+            inputMovementVector = agentInputHandler.agentRigidbody.transform.worldToLocalMatrix * inputMovementVector;
 
             float[] xzVel = 
             {
@@ -133,7 +153,19 @@ public class XZMovement : ActiveCommandObject
 
             localVel = new Vector3(xzVel[0], localVel.y, xzVel[1]);
 
-            agentRigidbody.velocity = agentRigidbody.transform.localToWorldMatrix * localVel;
+            agentInputHandler.agentRigidbody.velocity = agentInputHandler.agentRigidbody.transform.localToWorldMatrix * localVel;
         }
+    }
+
+    public void PlayFootstep(AgentInputHandler agentInputHandler)
+    {
+        agentInputHandler.footstepSource.clip = agentInputHandler.GetRandomFootstepClip();
+        agentInputHandler.footstepSource.Play();
+    }
+
+    public void CancelFootstep(AgentInputHandler agentInputHandler)
+    {
+        agentInputHandler.footstepSource.Stop();
+        agentInputHandler.footstepSource.clip = null;
     }
 }

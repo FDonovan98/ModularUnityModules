@@ -1,17 +1,23 @@
 ﻿using UnityEngine;
 using TMPro;
 
-using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class AgentInputHandler : MonoBehaviour
 {
     public AgentController agentController;
     private AgentInputHandler attachedScript;
     public GameObject pauseMenu;
-    public Behaviour behaviourToToggle;
+    public AudioSource mainAudioSource = null;
+    public Renderer agentRenderer = null;
     public AgentValues agentValues;
     public ActiveCommandObject[] activeCommands;
     public PassiveCommandObject[] passiveCommands;
+
+    [Header("Toggle Behaviour")]
+    public Behaviour behaviourToToggle;
+    public AudioClip toggleOnSound = null;
+    public AudioClip toggleOffSound = null;
 
     [Header("Check If Grounded")]
     public bool isGrounded = true;
@@ -25,6 +31,13 @@ public class AgentInputHandler : MonoBehaviour
     public float currentLeapCharge = 0.0f;
     [ReadOnly]
     public bool isJumping = false;
+    [ReadOnly]
+    public float moveSpeedMultiplier = 1.0f;
+    public Rigidbody agentRigidbody;
+    public AudioSource footstepSource = null;
+    public AudioClip[] footstepClips;
+    [ReadOnly]
+    public float timeSinceFootstep;
 
     [Header("Stairs")]
     [ReadOnly]
@@ -32,7 +45,6 @@ public class AgentInputHandler : MonoBehaviour
 
     [Header("Weapons")]
     public Weapon currentWeapon;
-    
     [ReadOnly]
     public float timeSinceLastShot = 0.0f;
     [ReadOnly]
@@ -41,6 +53,12 @@ public class AgentInputHandler : MonoBehaviour
     public ParticleSystem weaponMuzzleFlash;
     public Weapon[] equipedWeapons = new Weapon[2];
     public int currentWeaponID = 0;
+
+    [Header("Armour")]
+    public Armour equippedArmour = null;
+
+    [Header("Reloading")]
+    public bool isReloading = false;
 
     [Header("Camera")]
     public Camera agentCamera;
@@ -63,7 +81,17 @@ public class AgentInputHandler : MonoBehaviour
     [ReadOnly]
     public bool isLocalAgent = true;
 
-    protected GameObject agent;
+    [Header("ObjectInteraction")]
+    public TMP_Text interactionPromptText = null;
+    public Image progressBar = null;
+
+    [Header("Animations")]
+    public Animator animationController;
+
+    [Header("Emergency Regeneration")]
+    public AudioClip emergencyRegenAudio;
+
+    public GameObject agent;
 
     // Delegates used by commands.
     // Should add a delegate for UpdateUI(GameObject UIToUpdate, float newValue = 0.0f, int newIntValue = 0), maybe.
@@ -77,8 +105,12 @@ public class AgentInputHandler : MonoBehaviour
     public RunCommandOnCollisionStay runCommandOnCollisionStay;
     public delegate void RunCommandOnCollisionExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collision other);
     public RunCommandOnCollisionExit runCommandOnCollisionExit;
+    public delegate void RunCommandOnTriggerEnter(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
+    public RunCommandOnTriggerEnter runCommandOnTriggerEnter;
     public delegate void RunCommandOnTriggerStay(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
     public RunCommandOnTriggerStay runCommandOnTriggerStay;
+    public delegate void RunCommandOnTriggerExit(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues, Collider other);
+    public RunCommandOnTriggerExit runCommandOnTriggerExit;
 
 
     public delegate void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler);
@@ -110,6 +142,23 @@ public class AgentInputHandler : MonoBehaviour
         {
             element.RunCommandOnStart(attachedScript);
         }
+    }
+
+    public virtual void ChangeWeapon(Weapon weapon)
+    {
+        currentWeapon = weapon;
+        timeSinceLastShot = currentWeapon.fireRate;
+    }
+
+    public void ChangeArmour(Armour armour)
+    {
+        if (equippedArmour != null)
+        {
+            ChangeMovementSpeedModifier(equippedArmour.speedMultiplier, false);
+        }
+
+        equippedArmour = armour;
+        ChangeMovementSpeedModifier(equippedArmour.speedMultiplier, true);
     }
 
     private void Update()
@@ -152,6 +201,14 @@ public class AgentInputHandler : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (runCommandOnTriggerEnter != null)
+        {
+            runCommandOnTriggerEnter(agent, attachedScript, agentValues, other);
+        }
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (runCommandOnTriggerStay != null)
@@ -160,11 +217,34 @@ public class AgentInputHandler : MonoBehaviour
         }
     }
 
+    private void OnTriggerExit(Collider other)
+    {
+        if (runCommandOnTriggerExit != null)
+        {
+            runCommandOnTriggerExit(agent, attachedScript, agentValues, other);
+        }
+    }
+
     void InitiliseVariable()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
 
-        agent = attachedScript.gameObject;
+    public void ChangeMovementSpeedModifier(float value, bool multiply)
+    {
+        if (multiply)
+        {
+            moveSpeedMultiplier *= value;
+        }
+        else
+        {
+            moveSpeedMultiplier /= value;
+        }
+    }
+
+    public AudioClip GetRandomFootstepClip()
+    {
+        return footstepClips[Random.Range(0, footstepClips.Length - 1)];
     }
 }
