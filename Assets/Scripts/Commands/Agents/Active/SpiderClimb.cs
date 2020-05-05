@@ -1,3 +1,8 @@
+// Title: SpiderClimb.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Fetches all contact points for the agent and calculates the average normal, setting agentInputHandler.gravityDirection to this normal, and the agents transform.up to the negative normal.
+
 using UnityEngine;
 
 using System.Collections.Generic;

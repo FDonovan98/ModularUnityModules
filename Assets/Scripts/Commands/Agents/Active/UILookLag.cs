@@ -1,3 +1,8 @@
+// Title: UILookLag.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Lags agentInputHandler.HUD slightly behind the camera movement to give the impression of the hud being a physical thing, such as a helmet, that rests in front of the players view.
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "UILookLag", menuName = "Commands/Passive/UILookLag", order = 0)]

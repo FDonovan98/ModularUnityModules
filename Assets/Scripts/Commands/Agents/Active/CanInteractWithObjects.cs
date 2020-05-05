@@ -1,3 +1,8 @@
+// Title: CanInteractWithObjects.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Allows an agent to interact with and InteractableObject.cs scripts
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultCanInteractWithObjects", menuName = "Commands/Active/CanInteractWithObjects", order = 0)]
@@ -5,8 +10,7 @@ public class CanInteractWithObjects : ActiveCommandObject
 {
     [SerializeField]
     private KeyCode interact = KeyCode.E;
-
-    InteractableObject interactableObject;
+    private InteractableObject interactableObject;
 
     protected override void OnEnable()
     {

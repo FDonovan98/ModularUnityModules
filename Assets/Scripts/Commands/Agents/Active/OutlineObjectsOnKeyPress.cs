@@ -1,3 +1,9 @@
+// Title: OutlineObjectsOnKeyPress.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// References: https://github.com/michaelcurtiss/UnityOutlineFX
+// Description: Shades any selected Renderer components in red, ignoring depth filtering.
+
 using UnityEngine;
 
 using System.Collections.Generic;
@@ -5,10 +11,6 @@ using UnityEngine.Rendering;
 using System.Threading.Tasks;
 using System;
 using System.Threading;
-
-/// <summary>
-/// Code modified from: https://github.com/michaelcurtiss/UnityOutlineFX.
-/// </summary>
 
 [CreateAssetMenu(fileName = "DefaultOutlineObjectsOnKeyPress", menuName = "Commands/Active/OutlineObjectsOnKeyPress", order = 0)]
 public class OutlineObjectsOnKeyPress : ActiveCommandObject
@@ -25,10 +27,6 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
     public CameraEvent BufferDrawEvent = CameraEvent.BeforeImageEffects;
     public float flashSpeed = 4f;
 
-    // [Header("Blur Settings")]
-    // [Range(0, 1)]
-    // [Tooltip("Downsampling will make things more efficient, as well as make the outline a bit thicker")]
-    // public int Downsample = 1;
     [Range(0.0f, 3.0f)]
     public float BlurSize = 1.0f;
 

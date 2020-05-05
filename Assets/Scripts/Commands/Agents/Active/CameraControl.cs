@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿// Title: CameraControl.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Converts mouse movement into camera control
+
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultCameraMovement", menuName = "Commands/Active/Camera Controls")]
 public class CameraControl : ActiveCommandObject
@@ -21,7 +26,6 @@ public class CameraControl : ActiveCommandObject
         if (agentInputHandler.allowInput)
         {
             Vector3 mouseRotationInput = GetMouseInput(agent);
-
 
             if (mouseRotationInput != Vector3.zero)
             {

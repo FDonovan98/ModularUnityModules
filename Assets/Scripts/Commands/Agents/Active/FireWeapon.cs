@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿// Title: FireWeapon.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Checks if a weapon shot hit a game object, and activates the AgentInputHandler.runCommandOnAgentHasBeenHit on the hit object if it exists.
+
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultFireWeapon", menuName = "Commands/Active/FireWeapon", order = 0)]
 public class FireWeapon : ActiveCommandObject
@@ -62,10 +67,28 @@ public class FireWeapon : ActiveCommandObject
 
         AgentController agentController = (AgentController)agentInputHandler;
 
-        agentInputHandler.animationController.SetTrigger("isAttacking");
-
         agentInputHandler.timeSinceLastShot = 0.0f;
 
         agentController.ChangeStat(ResourceType.MagazineAmmo, -1);
+
+        RaycastHit hit;
+        if (Physics.Raycast(agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, out hit, agentInputHandler.currentWeapon.range))
+        {       
+            GameObjectWasHit(hit, agentInputHandler.currentWeapon);
+
+        }
+    }
+
+    public void GameObjectWasHit(RaycastHit hit, Weapon weapon)
+    {     
+        AgentInputHandler targetAgentInputHandler = hit.transform.gameObject.GetComponent<AgentInputHandler>();
+        
+        if (targetAgentInputHandler != null)
+        {
+            if (targetAgentInputHandler.runCommandOnAgentHasBeenHit != null)
+            {
+                targetAgentInputHandler.runCommandOnAgentHasBeenHit(targetAgentInputHandler, hit.point, hit.normal, weapon.damage);
+            }
+        }
     }
 }

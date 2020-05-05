@@ -1,3 +1,8 @@
+// Title: AimDownWeaponSight.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Switches between two available cameras
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "AimDownWeaponSight", menuName = "Commands/Active/Aim Down Weapon Sight", order = 0)]

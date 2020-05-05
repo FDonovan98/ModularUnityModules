@@ -1,3 +1,8 @@
+// Title: ToggleBehaviour.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Toggles agentInputHandler.behaviourToToggle on keypress.
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultToggleBehaviour", menuName = "Commands/Active/ToggleBehaviour", order = 0)]

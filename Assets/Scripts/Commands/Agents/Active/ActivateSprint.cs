@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿// Title: ActivateSprint.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Toggles agent sprinting, effecting the agents movement speed modifier using the AgentValues.sprintMultiplier
+
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultActivateSprint", menuName = "Commands/Active/Activate Sprint")]
 public class ActivateSprint : ActiveCommandObject
@@ -50,7 +55,5 @@ public class ActivateSprint : ActiveCommandObject
                 agentInputHandler.ChangeMovementSpeedModifier(agentValues.sprintMultiplier, false);
             }
         }
-
-
     }
 }

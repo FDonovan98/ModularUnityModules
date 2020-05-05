@@ -1,3 +1,8 @@
+// Title: EmergencyHealing.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Activates a healing burst on a keypress. A limit of the number of times this can be used is editable.
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultEmergencyHealing", menuName = "Commands/Active/Emergency Healing", order = 0)]

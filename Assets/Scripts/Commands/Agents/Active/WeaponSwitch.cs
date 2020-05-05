@@ -1,6 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿// Title: WeaponSwitch.cs
+// Author: Eugene Syricks
+// Date Last Edited: 05/05/2020
+// Description: Toggles which weapon is enabled for the agent.
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultSwitchWeapon", menuName = "Commands/Active/SwitchWeapon", order = 0)]
@@ -43,7 +45,7 @@ public class WeaponSwitch : ActiveCommandObject
         else if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
             agentInputHandler.currentWeaponID += 1;
-            if (agentInputHandler.currentWeaponID >= agentInputHandler.equipedWeapons.Length)
+            if (agentInputHandler.currentWeaponID >= agentInputHandler.equippedWeapons.Length)
             {
                 agentInputHandler.currentWeaponID = 0;
             }
@@ -54,7 +56,7 @@ public class WeaponSwitch : ActiveCommandObject
             agentInputHandler.currentWeaponID -= 1;
             if (agentInputHandler.currentWeaponID < 0)
             {
-                agentInputHandler.currentWeaponID = agentInputHandler.equipedWeapons.Length - 1;
+                agentInputHandler.currentWeaponID = agentInputHandler.equippedWeapons.Length - 1;
             }
             SwitchWeapon(agentInputHandler);
         }
@@ -65,7 +67,7 @@ public class WeaponSwitch : ActiveCommandObject
         MeshFilter mesh;
         mesh = agentInputHandler.weaponObject.GetComponent<MeshFilter>();
 
-        agentInputHandler.currentWeapon = agentInputHandler.equipedWeapons[agentInputHandler.currentWeaponID];
+        agentInputHandler.currentWeapon = agentInputHandler.equippedWeapons[agentInputHandler.currentWeaponID];
         if (mesh != null && agentInputHandler.currentWeapon.weaponMesh != null)
         {
             mesh.mesh = agentInputHandler.currentWeapon.weaponMesh;

@@ -1,3 +1,8 @@
+// Title: ChargeLeap.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Enables a chargeable jump, which can be configured to launch anywhere between straight up and in the direction of the camera
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultChargeLeap", menuName = "Commands/Active/Charge Leap")]

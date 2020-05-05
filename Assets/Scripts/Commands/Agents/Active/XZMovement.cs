@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿// Title: XZMovement.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Handles agent movement in the XZ plane (local to the agent). Also handles velocity degradation, meaning the agent will come to a stop if no input is supplied. Triggers footsteps if the agent is moving, but will cancel them when the agent stops.
+
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultXZMovement", menuName = "Commands/Active/XZ Movement")]
 public class XZMovement : ActiveCommandObject
@@ -38,25 +43,8 @@ public class XZMovement : ActiveCommandObject
 
             agentInputHandler.agentRigidbody.velocity += inputMovementVector * agentInputHandler.moveSpeedMultiplier;
             
-            if (inputMovementVector.magnitude > 0)
-            {
-                if (agentInputHandler.footstepSource != null && !agentInputHandler.footstepSource.isPlaying)
-                {
-                    if (agentInputHandler.timeSinceFootstep > agentValues.footstepDelay)
-                    {
-                        PlayFootstep(agentInputHandler);
-                        agentInputHandler.timeSinceFootstep = 0.0f;
-                    }
-                    else
-                    {
-                        agentInputHandler.timeSinceFootstep += Time.deltaTime;
-                    }
-                }
-            }
-            else if (agentInputHandler.footstepSource.clip != null && agentInputHandler.footstepSource.isPlaying)
-            {
-                CancelFootstep(agentInputHandler);
-            }
+            HandleFootsteps(agentInputHandler, agentValues);
+
         }
         else
         {
@@ -72,16 +60,6 @@ public class XZMovement : ActiveCommandObject
         {
             VelocityDegradation(agentValues.velocityDegradationInAir, inputMovementVector, agentInputHandler);
         }
-
-        //Animation shenanigans
-        //Layer 8 is Marine
-        if (agent.gameObject.layer == 8)
-        {
-            float movementAngle = Vector3.SignedAngle(agentInputHandler.agentRigidbody.velocity, agent.transform.forward, Vector3.down);
-            agentInputHandler.animationController.SetFloat("runningDirection", movementAngle);
-        }
-        float speed = agentInputHandler.agentRigidbody.velocity.magnitude;
-        agentInputHandler.animationController.SetFloat("speed", speed);
     }
 
     Vector3 GetKeyInput(GameObject agent)
@@ -155,6 +133,29 @@ public class XZMovement : ActiveCommandObject
 
             agentInputHandler.agentRigidbody.velocity = agentInputHandler.agentRigidbody.transform.localToWorldMatrix * localVel;
         }
+    }
+
+    void HandleFootsteps(AgentInputHandler agentInputHandler, AgentValues agentValues)
+    {
+        if (agentInputHandler.agentRigidbody.velocity.magnitude > 0)
+            {
+                if (agentInputHandler.footstepSource != null && !agentInputHandler.footstepSource.isPlaying)
+                {
+                    if (agentInputHandler.timeSinceFootstep > agentValues.footstepDelay)
+                    {
+                        PlayFootstep(agentInputHandler);
+                        agentInputHandler.timeSinceFootstep = 0.0f;
+                    }
+                    else
+                    {
+                        agentInputHandler.timeSinceFootstep += Time.deltaTime;
+                    }
+                }
+            }
+            else if (agentInputHandler.footstepSource.clip != null && agentInputHandler.footstepSource.isPlaying)
+            {
+                CancelFootstep(agentInputHandler);
+            }
     }
 
     public void PlayFootstep(AgentInputHandler agentInputHandler)

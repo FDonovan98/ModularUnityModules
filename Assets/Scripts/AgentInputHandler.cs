@@ -51,7 +51,10 @@ public class AgentInputHandler : MonoBehaviour
     public float currentRecoilValue = 0.0f;
     public GameObject weaponObject;
     public ParticleSystem weaponMuzzleFlash;
-    public Weapon[] equipedWeapons = new Weapon[2];
+    public AudioSource weaponAudioSource;
+
+    [Header("Switch Weapons")]
+    public Weapon[] equippedWeapons;
     public int currentWeaponID = 0;
 
     [Header("Armour")]
@@ -84,9 +87,6 @@ public class AgentInputHandler : MonoBehaviour
     [Header("ObjectInteraction")]
     public TMP_Text interactionPromptText = null;
     public Image progressBar = null;
-
-    [Header("Animations")]
-    public Animator animationController;
 
     [Header("Emergency Regeneration")]
     public AudioClip emergencyRegenAudio;

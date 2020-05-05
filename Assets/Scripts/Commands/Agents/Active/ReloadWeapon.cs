@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿// Title: ReloadWeapon.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Reduces the total extra ammo by the ammo missing in the magazine. Refills the magazine to its max capacity and locks the agent into reloading for the agentInputHandler.currentWeapon.reloadDuration
+
+using System.Collections;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultReload", menuName = "Commands/Active/ReloadWeapon", order = 0)]
@@ -28,14 +33,11 @@ public class ReloadWeapon : ActiveCommandObject
 
             if (CanReload(agentController))
             {
-                AudioSource weaponAudioSource = agentInputHandler.weaponObject.GetComponentInChildren<AudioSource>();
-                Debug.Log(weaponAudioSource);
-                weaponAudioSource.PlayOneShot(agentInputHandler.currentWeapon.reloadSound);
+                agentInputHandler.weaponAudioSource.PlayOneShot(agentInputHandler.currentWeapon.reloadSound);
 
                 agentInputHandler.StartCoroutine(Reload(agentInputHandler.currentWeapon.reloadDuration, agentController));
 
                 agentInputHandler.isReloading = true;
-                agentInputHandler.animationController.SetTrigger("isReloading");
             }
         }
     }
