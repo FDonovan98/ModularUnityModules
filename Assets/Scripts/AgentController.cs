@@ -46,7 +46,7 @@ public class AgentController : AgentInputHandler
     [ReadOnly]
     public bool isWallClimbing = false;
     [ReadOnly]
-    public bool oxygenIsRegening = false;
+    public bool oxygenIsRegenerating = false;
     [ReadOnly]
     public bool alienVisionIsActive = false;
 

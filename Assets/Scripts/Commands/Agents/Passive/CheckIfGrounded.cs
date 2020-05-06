@@ -1,7 +1,12 @@
+// Title: CheckIfGrounded.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Runs through the agents contact points, checking to see if any contact point normals are within agentValues.slopeLimitAngle degrees of -agentInputHandler.gravityDirection, returning the contact point closest to zero degrees. If none are within the angle then an average of all the contact points are taken, and this normal is checked against agentInputHandler.gravityDirection.
+
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "DefualtCheckIfGrounded", menuName = "Commands/Passive/CheckIfGrounded")]
+[CreateAssetMenu(fileName = "DefaultCheckIfGrounded", menuName = "Commands/Passive/Check If Grounded")]
 public class CheckIfGrounded : PassiveCommandObject
 {
     List<ContactPoint> allCPs = new List<ContactPoint>();
@@ -20,8 +25,6 @@ public class CheckIfGrounded : PassiveCommandObject
 
         foreach (ContactPoint element in allCPs)
         {
-            // Should be changed to use a slope angle.
-
             float cosTheta = Vector3.Dot(element.normal, agentInputHandler.gravityDirection);
             float theta = Mathf.Abs(Mathf.Acos(cosTheta) * Mathf.Rad2Deg - 180);
             
@@ -71,6 +74,7 @@ public class CheckIfGrounded : PassiveCommandObject
         {
             agentInputHandler.currentLeapCharge = 0.0f;
         }
+        
         agentInputHandler.isGrounded = foundGround;
         agentInputHandler.groundContactPoint = currentGround;
         allCPs.Clear();

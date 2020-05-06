@@ -116,7 +116,7 @@ public class AgentUIController : MonoBehaviour
 
     void UpdateOxygenRegenUI()
     {
-        oxyIsRegeningObject.SetActive(agentController.oxygenIsRegening);
+        oxyIsRegeningObject.SetActive(agentController.oxygenIsRegenerating);
     }
 
     void UpdateLowOxygenUI()

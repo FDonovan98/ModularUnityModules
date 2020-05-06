@@ -1,5 +1,9 @@
-using UnityEngine;
+// Title: ChangeResourceOverTime.cs
+// Author: Harry Donovan
+// Date Last Edited: 05/05/2020
+// Description: Is able to be configured in inspector to increase or decrease any agent resource over time. If the areaTag string is empty, then this will happen all the time, otherwise it will only happen within trigger colliders marked with the same tag.
 
+using UnityEngine;
 using System;
 
 [CreateAssetMenu(fileName = "ChangeResourceOverTime", menuName = "Commands/Passive/Change Resource Over Time", order = 0)]
@@ -62,7 +66,7 @@ public class ChangeResourceOverTime : PassiveCommandObject
                     // Updates UI to flag oxy is regenerating.
                     if (element.changeValue > 0)
                     {
-                        agentController.oxygenIsRegening = true;
+                        agentController.oxygenIsRegenerating = true;
                         agentController.updateUI(ResourceType.OxygenRegen);
                     }
                 }
@@ -91,7 +95,7 @@ public class ChangeResourceOverTime : PassiveCommandObject
                 // Updates UI to flag oxy is regenerating.
                 if (element.resourceType == ResourceType.Oxygen && element.changeValue > 0)
                 {
-                    agentController.oxygenIsRegening = false;
+                    agentController.oxygenIsRegenerating = false;
                     agentController.updateUI(ResourceType.OxygenRegen);
                 }
             }
