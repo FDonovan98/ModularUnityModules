@@ -1,6 +1,11 @@
+// Title: VelocityLimit.cs
+// Author: Harry Donovan
+// Date Last Edited: 07/05/2020
+// Description: Limits an agents velocity. Can be configured to a different value dependant on whether the agent is sprinting or in the air.
+
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DefaultVelocityLimit", menuName = "Commands/Passive/VelocityLimit", order = 0)]
+[CreateAssetMenu(fileName = "DefaultVelocityLimit", menuName = "Commands/Passive/Velocity Limit", order = 0)]
 public class VelocityLimit : PassiveCommandObject
 {
     public override void RunCommandOnStart(AgentInputHandler agentInputHandler)

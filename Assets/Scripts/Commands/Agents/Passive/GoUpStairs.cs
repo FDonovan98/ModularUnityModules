@@ -1,10 +1,14 @@
-//Code Source: https://cobertos.com/blog/post/how-to-climb-stairs-unity3d/
+// Title: AgentGivesHitFeedback.cs
+// Author: Harry Donovan
+// Date Last Edited: 07/05/2020
+// Code references: https://cobertos.com/blog/post/how-to-climb-stairs-unity3d/
+// Description: Checks colliders to detect a stair. A contact point will flag as a stair if it is in the direction of movement, it is nearly entirely vertical, and the step height is below agentValues.maxStepHeight.
+// Improvements: Allow stepping up contact points with a non-horizontal normal.
 
 using UnityEngine;
-
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "DefaultGoUpStairs", menuName = "Commands/Passive/GoUpStairs")]
+[CreateAssetMenu(fileName = "DefaultGoUpStairs", menuName = "Commands/Passive/Go Up Stairs")]
 public class GoUpStairs : PassiveCommandObject
 {
     List<ContactPoint> allCPs = new List<ContactPoint>();
@@ -18,18 +22,17 @@ public class GoUpStairs : PassiveCommandObject
     void RunCommandOnFixedUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
         Vector3 stepUpOffset;
-        Rigidbody agentRigidbody = agent.GetComponent<Rigidbody>();
 
         if (agentInputHandler.isGrounded)
         {
-            if (FindStair(out stepUpOffset, agent, agentRigidbody, agentInputHandler, agentValues))
+            if (FindStair(out stepUpOffset, agent, agentInputHandler.agentRigidbody, agentInputHandler, agentValues))
             {
-                agentRigidbody.position += stepUpOffset;
-                agentRigidbody.velocity = agentInputHandler.lastVelocity;
+                agentInputHandler.agentRigidbody.position += stepUpOffset;
+                agentInputHandler.agentRigidbody.velocity = agentInputHandler.lastVelocity;
             }
         }
 
-        agentInputHandler.lastVelocity = agentRigidbody.velocity;
+        agentInputHandler.lastVelocity = agentInputHandler.agentRigidbody.velocity;
         allCPs.Clear();
     }
 
@@ -65,7 +68,6 @@ public class GoUpStairs : PassiveCommandObject
             return false;
         }
 
-        // Debug.Log(contactPoint.point);
         if (contactPoint.point.y - agentInputHandler.groundContactPoint.point.y > agentValues.maxStepHeight)
         {
             return false;
@@ -80,8 +82,6 @@ public class GoUpStairs : PassiveCommandObject
 
         Ray ray = new Ray(rayOrigin, agentInputHandler.gravityDirection);
 
-        Debug.Log("raytime");
-        Debug.DrawRay(rayOrigin, agentInputHandler.gravityDirection * agentValues.maxStepHeight, Color.red);
         if (!(contactPoint.otherCollider.Raycast(ray, out hit, agentValues.maxStepHeight)))
         {
             return false;

@@ -1,3 +1,8 @@
+// Title: RecoilWeapon.cs
+// Author: Harry Donovan
+// Date Last Edited: 07/05/2020
+// Description: Kicks the camera up when the weapon is fired and will recenter it. This rate of recentering and recoil is controllable through animation curves and Weapon.recoilForce on the Weapon.cs object.
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultRecoilWeapon", menuName = "Commands/Passive/RecoilWeapon", order = 0)]
@@ -11,10 +16,7 @@ public class RecoilWeapon : PassiveCommandObject
 
     void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler)
     {
-        Debug.Log("recoil");
-        float timeDelta;
-        timeDelta = agentInputHandler.currentWeapon.upForceStep;
-        HandleRecoil(agentInputHandler, timeDelta);
+        HandleRecoil(agentInputHandler, agentInputHandler.currentWeapon.upForceStep);
     }
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)

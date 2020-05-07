@@ -1,3 +1,8 @@
+// Title: Gravity.cs
+// Author: Harry Donovan
+// Date Last Edited: 07/05/2020
+// Description: Applies a constant acceleration in the direction of agentInputHandler.gravityDirection, which by default is worlddown.
+
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultGravity", menuName = "Commands/Passive/Gravity")]
