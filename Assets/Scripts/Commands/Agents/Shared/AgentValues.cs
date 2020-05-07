@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿// Title: AgentValues.cs
+// Author: Harry Donovan
+// Date Last Edited: 07/05/2020
+// Description: Contains all constants for any commands. Constants are stored here while any values that will change at runtime are stored in the AgentInputHandler or AgentController.
+
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefaultAgentValues", menuName = "Commands/Agent Values")]
 public class AgentValues : ScriptableObject

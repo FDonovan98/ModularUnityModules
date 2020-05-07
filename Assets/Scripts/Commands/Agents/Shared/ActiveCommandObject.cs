@@ -1,5 +1,9 @@
-﻿using UnityEngine;
+﻿// Title: ActiveCommandObject.cs
+// Author: Harry Donovan
+// Date Last Edited: 07/05/2020
+// Description: Abstract scriptable object used as the base class for any active commands. keyTable is for use when creating dynamic and rebindable key bind tables. Currently unused.
 
+using UnityEngine;
 using System.Collections.Generic;
 
 public abstract class ActiveCommandObject : CommandObject
