@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿// Title: AgentUIController.cs
+// Author: Harry Donovan
+// Date Last Edited: 07/05/2020
+// Description: Handles all of the UI updates for the agent. Hooks into the updateUI delegate in AgentController.cs for all of its calls.
 
-
-using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class AgentUIController : MonoBehaviour
 {

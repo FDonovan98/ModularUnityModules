@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿// Title: AgentController.cs
+// Author: Harry Donovan
+// Date Last Edited: 07/05/2020
+// Description: Stores current variables for the agent that change at run time. Contains functions to change these variables, as well as a delegate to enable UI updates.
+
 using UnityEngine;
-using TMPro;
-using UnityEngine.UI;
 
 public enum ResourceType
 {

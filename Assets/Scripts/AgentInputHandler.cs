@@ -1,7 +1,11 @@
-﻿using UnityEngine;
-using TMPro;
+﻿// Title: AgentInputHandler.cs
+// Author: Harry Donovan
+// Date Last Edited: 07/05/2020
+// Description: Script allowing an agent to take user input. Contains references to gameobjects or behaviors attached to the agent that are needed by commands. Contains delegates which run during the MonoBehaviour to allow commands to hook into MonoBehaviour without having to be a MonoBehaviour themselves. Also contains custom delegates for specific events.
 
+using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class AgentInputHandler : MonoBehaviour
 {
