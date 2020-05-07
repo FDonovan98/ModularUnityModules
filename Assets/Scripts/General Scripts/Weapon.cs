@@ -1,4 +1,9 @@
-﻿using UnityEngine;
+﻿// Title: Weapon.cs
+// Author: Harry Donovan
+// Date Last Edited: 07/05/2020
+// Description: Equipable weapon object containing constants to control weapon properties.
+
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Objects/Create New Weapon")]
 public class Weapon : BaseObject
@@ -59,32 +64,4 @@ public class Weapon : BaseObject
     public Mesh weaponMesh;
 
     #endregion
-
-    /// <summary>
-    /// Determines whether you can fire, using the current bullets in your gun,
-    /// the fire rate and the magazine size to do so.
-    /// </summary>
-    /// <param name="currentTime"></param>
-    /// <returns>True if you can fire, and false if you cannot.</returns>
-    public bool CanFire(float currentTime)
-    {
-        if (currentTime >= fireRate)
-        {
-            if (magSize > 0)
-            {
-                if (bulletsInCurrentMag > 0)
-                {
-                    return true;
-                }
-
-                Debug.Log("You need to reload.");
-            }
-            else if (magSize == -1)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }
