@@ -1,16 +1,22 @@
-using UnityEngine;
+// Title: InteractableObject.cs
+// Author: Harry Donovan
+// Date Last Edited: 07/05/2020
+// Description: Abstract class intended for anything that can be interacted with by an agent. The agent must have an CanInteractWithObjects.cs component to be able to interact.
 
+using UnityEngine;
 using UnityEngine.UI;
 
 public abstract class InteractableObject : MonoBehaviour
 {
     public string interactionPrompt = "Press E to interact";
-    [SerializeField] 
-    private float interactTime; // The time needed to interact with the object to activate/open it.
-    [SerializeField] 
-    protected bool debug = false; // Should the debug messages be displayed.
-    private float currentInteractionTime = 0f; // How long the player has been pressing the interact key.
-    public bool interactionComplete = false; // Is the interaction complete?
+    // The time needed to interact with the object to activate/open it.
+    [SerializeField] private float interactTime;
+    // Should the debug messages be displayed.
+    [SerializeField] protected bool debug = false; 
+    // How long the player has been pressing the interact key.
+    private float currentInteractionTime = 0f; 
+    // Is the interaction complete?
+    public bool interactionComplete = false;
 
     public void resetInteraction(AgentInputHandler agentInputHandler)
     {

@@ -1,3 +1,9 @@
+// Title: InteractableDoor.cs
+// Author: Harry Donovan
+// Colaborators: Luke Day
+// Date Last Edited: 07/05/2020
+// Description: Allows an agent with a CanInteractWithObjects.cs command to open doors. The door shuts again once the agent who openend the door has left the trigger area.
+
 using UnityEngine;
 
 public class InteractableDoor : InteractableObject
