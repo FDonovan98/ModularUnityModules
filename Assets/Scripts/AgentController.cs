@@ -15,7 +15,7 @@ public enum ResourceType
     WallClimbing,
     EmergencyRegen,
     LowOxygen,
-    OxygenRegen, 
+    OxygenRegen,
     AlienVision
 }
 
@@ -56,7 +56,7 @@ public class AgentController : AgentInputHandler
     public UpdateUI updateUI;
 
     private void Awake()
-    { 
+    {
         updateUI += TriggerEffectsOnStatChange;
 
         if (agentValues != null)
@@ -108,7 +108,7 @@ public class AgentController : AgentInputHandler
     public override void ChangeWeapon(Weapon weapon)
     {
         base.ChangeWeapon(weapon);
-        
+
         currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
         currentExtraAmmo = currentWeapon.magSize * 2;
 
