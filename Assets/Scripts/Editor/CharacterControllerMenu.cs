@@ -5,6 +5,8 @@ using System.IO;
 public class CharacterController : EditorWindow
 {
     string[] activeCommands;
+    string[] passiveCommands;
+    GUIStyle customStyle;
 
     [MenuItem("Window/Character Controller")]
     public static void ShowWindow()
@@ -14,16 +16,40 @@ public class CharacterController : EditorWindow
 
     void Awake()
     {
-        activeCommands = Directory.GetFiles("Assets/Scripts/Commands/Agents/Active", "*.cs");
+        activeCommands = GetFileNamesFromDirectory("Assets/Scripts/Commands/Agents/Active", "*.cs");
+        
+        passiveCommands = GetFileNamesFromDirectory("Assets/Scripts/Commands/Agents/Passive", "*.cs");
+    }
 
-        for (int i = 0; i < activeCommands.Length; i++)
+    string[] GetFileNamesFromDirectory(string filePath, string extension)
+    {
+        string[] fileNames = Directory.GetFiles(filePath, extension);
+
+        for (int i = 0; i < fileNames.Length; i++)
         {
-            activeCommands[i] = Path.GetFileNameWithoutExtension(activeCommands[i]);
+            fileNames[i] = Path.GetFileNameWithoutExtension(fileNames[i]);
         }
 
-        foreach (string element in activeCommands)
+        return fileNames;
+    }
+
+    void OnGUI()
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.BeginVertical();
+        ArrayToLabelList(activeCommands, "textField");
+        GUILayout.EndVertical();
+        GUILayout.BeginVertical();
+        ArrayToLabelList(passiveCommands, "textField");
+        GUILayout.EndVertical();
+        GUILayout.EndHorizontal();
+    }
+
+    void ArrayToLabelList(string[] array, string labelStyle)
+    {
+        foreach (string element in array)
         {
-            Debug.Log(element);
+            GUILayout.Label(element, labelStyle);
         }
     }
 }
