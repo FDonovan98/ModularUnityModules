@@ -64,7 +64,6 @@ public class AgentController : AgentInputHandler
             currentOxygen = agentValues.maxOxygen;
             currentHealth = agentValues.maxHealth;
             emergencyRegenUsesRemaining = agentValues.emergencyRegenUses;
-            Debug.Log("awake");
         }
 
         if (currentWeapon != null)

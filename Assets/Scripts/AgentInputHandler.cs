@@ -249,6 +249,13 @@ public class AgentInputHandler : MonoBehaviour
 
     public AudioClip GetRandomFootstepClip()
     {
-        return footstepClips[Random.Range(0, footstepClips.Length - 1)];
+        if (footstepClips.Length > 0)
+        {
+            return footstepClips[Random.Range(0, footstepClips.Length - 1)];
+        }
+        else
+        {
+            return null;
+        }
     }
 }
