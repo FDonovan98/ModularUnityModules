@@ -5,8 +5,11 @@ using System.IO;
 public class CharacterController : EditorWindow
 {
     string[] activeCommands;
+    bool[] activeCommandsExpanded;
     string[] passiveCommands;
-    GUIStyle customStyle;
+    bool[] passiveCommandsExpanded;
+
+    string[] foundAssets;
 
     public AgentInputHandler agent;
 
@@ -19,8 +22,10 @@ public class CharacterController : EditorWindow
     void Awake()
     {
         activeCommands = GetFileNamesFromDirectory("Assets/Scripts/Commands/Agents/Active", "*.cs");
+        activeCommandsExpanded = new bool[activeCommands.Length];
         
         passiveCommands = GetFileNamesFromDirectory("Assets/Scripts/Commands/Agents/Passive", "*.cs");
+        passiveCommandsExpanded = new bool[passiveCommands.Length];
     }
 
     string[] GetFileNamesFromDirectory(string filePath, string extension)
@@ -37,56 +42,86 @@ public class CharacterController : EditorWindow
 
     void OnGUI()
     {
-        customStyle = new GUIStyle(GUI.skin.button);
-        customStyle.active.background = Texture2D.redTexture;
-
         agent = (AgentInputHandler)EditorGUILayout.ObjectField(agent, typeof(AgentInputHandler), true);
+
         GUILayout.BeginHorizontal();
         GUILayout.BeginVertical();
-        ArrayToLabelList(activeCommands, customStyle);
+        ArrayToExpandableButtonList(activeCommands, activeCommandsExpanded);
         GUILayout.EndVertical();
         GUILayout.BeginVertical();
-        ArrayToLabelList(passiveCommands, customStyle);
+        ArrayToExpandableButtonList(passiveCommands, passiveCommandsExpanded);
         GUILayout.EndVertical();
         GUILayout.EndHorizontal();
+
+        // Debug.Log(ScriptableObject.CreateInstance(activeCommands[0]).GetType().ToString());
     }
 
-    void ArrayToLabelList(string[] array, string labelStyle)
+    // Perfomance can be improved by searching for existing assets once in Awake.
+    // A class would be needed to organise this containing command name, if it's expanded, and existing objects of that type.
+    void ArrayToExpandableButtonList(string[] array, bool[] foldoutTracker)
     {
-        foreach (string element in array)
+        for (int i = 0; i < array.Length; i++)
         {
-            GUILayout.Button(element, labelStyle);
+            foldoutTracker[i] = EditorGUILayout.Foldout(foldoutTracker[i], array[i]);
+            
+            if (foldoutTracker[i])
+            {
+                string commandType = ScriptableObject.CreateInstance(array[i]).GetType().ToString();
+
+                string[] foundAssets = AssetDatabase.FindAssets("t: " + commandType);
+
+                for (int j = 0; j < foundAssets.Length; j++)
+                { 
+                    foundAssets[j] = Path.GetFileNameWithoutExtension(AssetDatabase.GUIDToAssetPath(foundAssets[j]));
+                }
+
+                ArrayToButtonList(foundAssets);
+            }
         }
     }
     
-    void ArrayToLabelList(string[] array, GUIStyle style)
+    void ArrayToButtonList(string[] array)
     {
         foreach (string element in array)
         {
-            if (GUILayout.Button(element, style))
+            if (GUILayout.Button(element))
             {
                 if (array == activeCommands)
                 {
-                    agent.activeCommands = AddElementToArray<ActiveCommandObject>(agent.activeCommands, (ActiveCommandObject)ScriptableObject.CreateInstance(element));
+                    AddUniqueElementTypeToArray<ActiveCommandObject>(ref agent.activeCommands, (ActiveCommandObject)ScriptableObject.CreateInstance(element));
                 }
                 else
                 {
-                    agent.passiveCommands = AddElementToArray<PassiveCommandObject>(agent.passiveCommands, (PassiveCommandObject)ScriptableObject.CreateInstance(element));
+                    AddUniqueElementTypeToArray<PassiveCommandObject>(ref agent.passiveCommands, (PassiveCommandObject)ScriptableObject.CreateInstance(element));
                 }
             }
         }
     }
 
-    static T[] AddElementToArray<T>(T[] arrayToAddTo, T elementToAdd)
+    static void AddElementToArray<T>(ref T[] arrayToAddTo, T elementToAdd)
     {
         T[] temp = arrayToAddTo;
         arrayToAddTo = new T[arrayToAddTo.Length + 1];
+
         int i;
         for (i = 0; i < temp.Length; i++)
         {
             arrayToAddTo[i] = temp[i];
         }
+
         arrayToAddTo[i] = elementToAdd;
-        return arrayToAddTo;
+    }
+
+    static void AddUniqueElementTypeToArray<T>(ref T[] arrayToAddTo, T elementToAdd)
+    {
+        foreach (T element in arrayToAddTo)
+        {
+            if (element.GetType() == elementToAdd.GetType())
+            {
+                Debug.Log("Array already has an element of this type");
+            }
+        }
+
+        AddElementToArray<T>(ref arrayToAddTo, elementToAdd);
     }
 }
