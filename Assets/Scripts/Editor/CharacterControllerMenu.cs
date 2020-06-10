@@ -75,10 +75,7 @@ public class CharacterController : EditorWindow
                     foundAssets[j] = Path.GetFileNameWithoutExtension(AssetDatabase.GUIDToAssetPath(foundAssets[j]));
                 }
 
-                if (array == activeCommands)
-                {
-                    ArrayToButtonList(array, foundAssets, commandType);
-                }
+                ArrayToButtonList(array, foundAssets, commandType);
             }
         }
     }
@@ -87,7 +84,17 @@ public class CharacterController : EditorWindow
     {
         foreach (string element in array)
         {
-            GUILayout.Button(element);
+            if (GUILayout.Button(element))
+            {
+                if (parentArray == activeCommands)
+                {
+                    AddUniqueElementTypeToArray<ActiveCommandObject>(ref agent.activeCommands,  AssetDatabase.LoadAssetAtPath<ActiveCommandObject>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(element)[0])));
+                }
+                else
+                {
+                    AddUniqueElementTypeToArray<PassiveCommandObject>(ref agent.passiveCommands, AssetDatabase.LoadAssetAtPath<PassiveCommandObject>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(element)[0])));
+                }
+            }
         }
 
         if (GUILayout.Button("Add New Command"))
