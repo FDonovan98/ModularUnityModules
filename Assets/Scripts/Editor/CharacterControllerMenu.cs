@@ -75,24 +75,27 @@ public class CharacterController : EditorWindow
                     foundAssets[j] = Path.GetFileNameWithoutExtension(AssetDatabase.GUIDToAssetPath(foundAssets[j]));
                 }
 
-                ArrayToButtonList(foundAssets);
+                if (array == activeCommands)
+                {
+                    ArrayToButtonList(array, foundAssets, commandType);
+                }
             }
         }
     }
     
-    void ArrayToButtonList(string[] array)
+    void ArrayToButtonList(string[] parentArray, string[] array, string commandType)
     {
         foreach (string element in array)
         {
             if (GUILayout.Button(element))
             {
-                if (array == activeCommands)
+                if (parentArray == activeCommands)
                 {
-                    AddUniqueElementTypeToArray<ActiveCommandObject>(ref agent.activeCommands, (ActiveCommandObject)ScriptableObject.CreateInstance(element));
+                    AddUniqueElementTypeToArray<ActiveCommandObject>(ref agent.activeCommands, (ActiveCommandObject)ScriptableObject.CreateInstance(commandType));
                 }
                 else
                 {
-                    AddUniqueElementTypeToArray<PassiveCommandObject>(ref agent.passiveCommands, (PassiveCommandObject)ScriptableObject.CreateInstance(element));
+                    AddUniqueElementTypeToArray<PassiveCommandObject>(ref agent.passiveCommands, (PassiveCommandObject)ScriptableObject.CreateInstance(commandType));
                 }
             }
         }
@@ -119,6 +122,7 @@ public class CharacterController : EditorWindow
             if (element.GetType() == elementToAdd.GetType())
             {
                 Debug.Log("Array already has an element of this type");
+                return;
             }
         }
 
