@@ -87,16 +87,18 @@ public class CharacterController : EditorWindow
     {
         foreach (string element in array)
         {
-            if (GUILayout.Button(element))
+            GUILayout.Button(element);
+        }
+
+        if (GUILayout.Button("Add New Command"))
+        {
+            if (parentArray == activeCommands)
             {
-                if (parentArray == activeCommands)
-                {
-                    AddUniqueElementTypeToArray<ActiveCommandObject>(ref agent.activeCommands, (ActiveCommandObject)ScriptableObject.CreateInstance(commandType));
-                }
-                else
-                {
-                    AddUniqueElementTypeToArray<PassiveCommandObject>(ref agent.passiveCommands, (PassiveCommandObject)ScriptableObject.CreateInstance(commandType));
-                }
+                AddUniqueElementTypeToArray<ActiveCommandObject>(ref agent.activeCommands, (ActiveCommandObject)ScriptableObject.CreateInstance(commandType));
+            }
+            else
+            {
+                AddUniqueElementTypeToArray<PassiveCommandObject>(ref agent.passiveCommands, (PassiveCommandObject)ScriptableObject.CreateInstance(commandType));
             }
         }
     }
