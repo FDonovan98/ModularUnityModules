@@ -101,11 +101,17 @@ public class CharacterController : EditorWindow
         {
             if (parentArray == activeCommands)
             {
-                AddUniqueElementTypeToArray<ActiveCommandObject>(ref agent.activeCommands, (ActiveCommandObject)ScriptableObject.CreateInstance(commandType));
+                ActiveCommandObject temp = (ActiveCommandObject)ScriptableObject.CreateInstance(commandType);
+                AssetDatabase.CreateAsset(temp, "Assets/Commands/Active/"+temp.GetType().ToString()+".asset");
+                AssetDatabase.SaveAssets();
+                AddUniqueElementTypeToArray<ActiveCommandObject>(ref agent.activeCommands, temp);
             }
             else
             {
-                AddUniqueElementTypeToArray<PassiveCommandObject>(ref agent.passiveCommands, (PassiveCommandObject)ScriptableObject.CreateInstance(commandType));
+                PassiveCommandObject temp = (PassiveCommandObject)ScriptableObject.CreateInstance(commandType);
+                AssetDatabase.CreateAsset(temp, "Assets/Commands/Passive/"+temp.GetType().ToString()+".asset");
+                AssetDatabase.SaveAssets();
+                AddUniqueElementTypeToArray<PassiveCommandObject>(ref agent.passiveCommands, temp);
             }
         }
     }
