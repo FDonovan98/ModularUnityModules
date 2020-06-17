@@ -132,11 +132,12 @@ public class CharacterController : EditorWindow
 
     static void AddUniqueElementTypeToArray<T>(ref T[] arrayToAddTo, T elementToAdd)
     {
-        foreach (T element in arrayToAddTo)
+        for (int i = 0; i < arrayToAddTo.Length; i++)
         {
-            if (element.GetType() == elementToAdd.GetType())
+            if (arrayToAddTo[i].GetType() == elementToAdd.GetType())
             {
-                Debug.Log("Array already has an element of this type");
+                Debug.Log("Array already has an element of this type. Replacing version");
+                arrayToAddTo[i] = elementToAdd;
                 return;
             }
         }

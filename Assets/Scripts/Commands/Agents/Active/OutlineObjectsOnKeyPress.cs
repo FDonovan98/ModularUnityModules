@@ -251,7 +251,7 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
 
         foreach (GameObject element in players)
         {
-            if (element != agentInputHandler.agent)
+            if (element != agentInputHandler.gameObject)
             {
                 objectsToOutline.AddRange(element.GetComponentsInChildren<Renderer>());
             }

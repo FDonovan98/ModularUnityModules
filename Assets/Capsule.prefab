@@ -184,7 +184,9 @@ MonoBehaviour:
   mainAudioSource: {fileID: 8079664681849351273}
   agentRenderer: {fileID: 8079664681849351277}
   agentValues: {fileID: 11400000, guid: ce4aa55ad402b0644b2fa40512ac76a8, type: 2}
-  activeCommands: []
+  activeCommands:
+  - {fileID: 0}
+  - {fileID: 11400000, guid: d0de029669f3c634b9ea4a37af5169f8, type: 2}
   passiveCommands: []
   behaviourToToggle: {fileID: 0}
   toggleOnSound: {fileID: 0}

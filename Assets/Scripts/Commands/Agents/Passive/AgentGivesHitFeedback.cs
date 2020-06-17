@@ -25,14 +25,14 @@ public class AgentGivesHitFeedback : PassiveCommandObject
             }
             else
             {
-                Debug.LogAssertion(agentInputHandler.agent.name + " doesn't have a hit feedback sound");
+                Debug.LogAssertion(agentInputHandler.gameObject.name + " doesn't have a hit feedback sound");
             }
 
             Destroy(hitEffect, 5f);
         }
         else
         {
-            Debug.LogAssertion(agentInputHandler.agent.name + " doesn't have a hit feedback particle effect");
+            Debug.LogAssertion(agentInputHandler.gameObject.name + " doesn't have a hit feedback particle effect");
         }
     }
 }

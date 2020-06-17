@@ -9,11 +9,12 @@ using TMPro;
 
 public class AgentInputHandler : MonoBehaviour
 {
-    public AgentController agentController;
+    protected AgentController agentController;
     private AgentInputHandler attachedScript;
+
     public GameObject pauseMenu;
     public AudioSource mainAudioSource = null;
-    public Renderer agentRenderer = null;
+
     public AgentValues agentValues;
     public ActiveCommandObject[] activeCommands;
     public PassiveCommandObject[] passiveCommands;
@@ -24,78 +25,90 @@ public class AgentInputHandler : MonoBehaviour
     public AudioClip toggleOffSound = null;
 
     [Header("Check If Grounded")]
+    [HideInInspector]
     public bool isGrounded = true;
+    [HideInInspector]
     public ContactPoint groundContactPoint = new ContactPoint();
 
     [Header("Movement")]
+    [HideInInspector]
     public bool isSprinting = false;
+    [HideInInspector]
     public Vector3 gravityDirection = Vector3.down;
+    [HideInInspector]
     public bool allowInput = true;
-    [ReadOnly]
+    [HideInInspector]
     public float currentLeapCharge = 0.0f;
-    [ReadOnly]
+    [HideInInspector]
     public bool isJumping = false;
-    [ReadOnly]
+    [HideInInspector]
     public float moveSpeedMultiplier = 1.0f;
+    [HideInInspector]
     public Rigidbody agentRigidbody;
+
+    [Header("Footsteps")]
     public AudioSource footstepSource = null;
     public AudioClip[] footstepClips;
     [ReadOnly]
+    [HideInInspector]
     public float timeSinceFootstep;
 
     [Header("Stairs")]
-    [ReadOnly]
+    [HideInInspector]
     public Vector3 lastVelocity = Vector3.zero;
 
     [Header("Weapons")]
     public Weapon currentWeapon;
-    [ReadOnly]
+    [HideInInspector]
     public float timeSinceLastShot = 0.0f;
-    [ReadOnly]
+    [HideInInspector]
     public float currentRecoilValue = 0.0f;
+    [HideInInspector]
     public GameObject weaponObject;
     public ParticleSystem weaponMuzzleFlash;
     public AudioSource weaponAudioSource;
 
-    [Header("Switch Weapons")]
     public Weapon[] equippedWeapons;
+    [HideInInspector]
     public int currentWeaponID = 0;
 
     [Header("Armour")]
     public Armour equippedArmour = null;
 
     [Header("Reloading")]
+    [HideInInspector]
     public bool isReloading = false;
 
     [Header("Camera")]
     public Camera agentCamera;
-
-    [Header("ADS")]
     public Camera mainCamera;
     public Camera aDSCamera;
+    [HideInInspector]
     public bool isADS = false;
-    public Canvas HUDCanvas;
 
-    [Header("UI Offset")]
+    [Header("HUD")]
+    public Canvas HUDCanvas;
     public GameObject HUD;
-    [ReadOnly]
+    public GameObject deathScreen;
+    
+    [HideInInspector]
     public Vector3 UIOffset = Vector3.zero;
 
     [Header("Agent Hit Feedback")]
     public AudioClip agentHitSound;
     public GameObject agentHitParticles;
 
-    [ReadOnly]
+    [HideInInspector]
     public bool isLocalAgent = true;
 
     [Header("ObjectInteraction")]
+    [HideInInspector]
     public TMP_Text interactionPromptText = null;
+    [HideInInspector]
     public Image progressBar = null;
 
     [Header("Emergency Regeneration")]
     public AudioClip emergencyRegenAudio;
-
-    public GameObject agent;
 
     // Delegates used by commands.
     // Should add a delegate for UpdateUI(GameObject UIToUpdate, float newValue = 0.0f, int newIntValue = 0), maybe.
@@ -169,7 +182,7 @@ public class AgentInputHandler : MonoBehaviour
     {
         if (runCommandOnUpdate != null)
         {
-            runCommandOnUpdate(agent, attachedScript, agentValues);
+            runCommandOnUpdate(this.gameObject, attachedScript, agentValues);
         }
     }
 
@@ -177,7 +190,7 @@ public class AgentInputHandler : MonoBehaviour
     {
         if (runCommandOnFixedUpdate != null)
         {
-            runCommandOnFixedUpdate(agent, attachedScript, agentValues);
+            runCommandOnFixedUpdate(this.gameObject, attachedScript, agentValues);
         }
     }
 
@@ -185,7 +198,7 @@ public class AgentInputHandler : MonoBehaviour
     {
         if (runCommandOnCollisionEnter != null)
         {
-            runCommandOnCollisionEnter(agent, attachedScript, agentValues, other);
+            runCommandOnCollisionEnter(this.gameObject, attachedScript, agentValues, other);
         }
     }
 
@@ -193,7 +206,7 @@ public class AgentInputHandler : MonoBehaviour
     {
         if (runCommandOnCollisionStay != null)
         {
-            runCommandOnCollisionStay(agent, attachedScript, agentValues, other);
+            runCommandOnCollisionStay(this.gameObject, attachedScript, agentValues, other);
         }
     }
 
@@ -201,7 +214,7 @@ public class AgentInputHandler : MonoBehaviour
     {
         if (runCommandOnCollisionExit != null)
         {
-            runCommandOnCollisionExit(agent, attachedScript, agentValues, other);
+            runCommandOnCollisionExit(this.gameObject, attachedScript, agentValues, other);
         }
     }
 
@@ -209,7 +222,7 @@ public class AgentInputHandler : MonoBehaviour
     {
         if (runCommandOnTriggerEnter != null)
         {
-            runCommandOnTriggerEnter(agent, attachedScript, agentValues, other);
+            runCommandOnTriggerEnter(this.gameObject, attachedScript, agentValues, other);
         }
     }
 
@@ -217,7 +230,7 @@ public class AgentInputHandler : MonoBehaviour
     {
         if (runCommandOnTriggerStay != null)
         {
-            runCommandOnTriggerStay(agent, attachedScript, agentValues, other);
+            runCommandOnTriggerStay(this.gameObject, attachedScript, agentValues, other);
         }
     }
 
@@ -225,7 +238,7 @@ public class AgentInputHandler : MonoBehaviour
     {
         if (runCommandOnTriggerExit != null)
         {
-            runCommandOnTriggerExit(agent, attachedScript, agentValues, other);
+            runCommandOnTriggerExit(this.gameObject, attachedScript, agentValues, other);
         }
     }
 
@@ -233,6 +246,8 @@ public class AgentInputHandler : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        agentRigidbody = this.gameObject.GetComponent<Rigidbody>();
     }
 
     public void ChangeMovementSpeedModifier(float value, bool multiply)

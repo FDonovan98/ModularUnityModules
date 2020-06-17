@@ -21,35 +21,36 @@ public enum ResourceType
 
 public class AgentController : AgentInputHandler
 {
-    public GameObject deathScreen;
-    public Color alienVision;
-    public bool specialVision = false;
     public GameObject emergencyRegenParticleSystem;
     public GameObject emergencyRegenParticleSystems;
+    
+    [Header("Oxygen")]
     public AudioClip oxygenWarningAudio = null;
     public float oxygenWarningDingStartRate = 2.0f;
     private float timeInLowOxygen = float.MaxValue;
 
     [Header("Current Stats")]
-    [ReadOnly]
+    [HideInInspector]
     public float currentHealth = 0.0f;
-    [ReadOnly]
+    [HideInInspector]
     public float currentOxygen = 0.0f;
     [Range(0, 100)]
     public int oxygenWarningAmount = 30;
+    [HideInInspector]
     public bool lowOxygen = false;
-    [ReadOnly]
+    [HideInInspector]
     public int currentExtraAmmo = 0;
-    [ReadOnly]
+    [HideInInspector]
     public int currentBulletsInMag = 0;
-    [ReadOnly]
+    [HideInInspector]
     public bool emergencyRegenActive = false;
+    [HideInInspector]
     public int emergencyRegenUsesRemaining = 0;
-    [ReadOnly]
+    [HideInInspector]
     public bool isWallClimbing = false;
-    [ReadOnly]
+    [HideInInspector]
     public bool oxygenIsRegenerating = false;
-    [ReadOnly]
+    [HideInInspector]
     public bool alienVisionIsActive = false;
 
     public delegate void UpdateUI(ResourceType resourceType = ResourceType.None);
@@ -57,6 +58,7 @@ public class AgentController : AgentInputHandler
 
     private void Awake()
     {
+        agentController = this;
         updateUI += TriggerEffectsOnStatChange;
 
         if (agentValues != null)
