@@ -15,13 +15,13 @@ public class AgentGivesHitFeedback : PassiveCommandObject
 
     private void RunCommandOnAgentHasBeenHit(AgentInputHandler agentInputHandler, Vector3 position, Vector3 normal, float value)
     {
-        if (agentInputHandler.agentHitParticles != null)
+        if (agentInputHandler.agentHitFeedback.agentHitParticles != null)
         {
-			GameObject hitEffect = Instantiate(agentInputHandler.agentHitParticles, position, Quaternion.Euler(normal));
+			GameObject hitEffect = Instantiate(agentInputHandler.agentHitFeedback.agentHitParticles, position, Quaternion.Euler(normal));
 
-            if (agentInputHandler.agentHitSound != null)
+            if (agentInputHandler.agentHitFeedback.agentHitSound != null)
             {   
-                agentInputHandler.mainAudioSource.PlayOneShot(agentInputHandler.agentHitSound);
+                agentInputHandler.mainAudioSource.PlayOneShot(agentInputHandler.agentHitFeedback.agentHitSound);
             }
             else
             {

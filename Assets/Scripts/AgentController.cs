@@ -19,23 +19,34 @@ public enum ResourceType
     AlienVision
 }
 
-public class AgentController : AgentInputHandler
+[System.Serializable]
+public class EmergencyRegenStrut
 {
+    public AudioClip emergencyRegenAudio;
     public GameObject emergencyRegenParticleSystem;
     public GameObject emergencyRegenParticleSystems;
+}
 
-    [Header("Oxygen")]
+public class OxygenStruct
+{
     public AudioClip oxygenWarningAudio = null;
     public float oxygenWarningDingStartRate = 2.0f;
-    private float timeInLowOxygen = float.MaxValue;
-
-    [Header("Current Stats")]
-    [HideInInspector]
-    public float currentHealth = 0.0f;
+    public float timeInLowOxygen = float.MaxValue;
     [HideInInspector]
     public float currentOxygen = 0.0f;
     [Range(0, 100)]
     public int oxygenWarningAmount = 30;
+}
+
+public class AgentController : AgentInputHandler
+{
+    public EmergencyRegenStrut emergencyRegen;
+
+    public OxygenStruct oxygen;
+
+    [Header("Current Stats")]
+    [HideInInspector]
+    public float currentHealth = 0.0f;
     [HideInInspector]
     public bool lowOxygen = false;
     [HideInInspector]
@@ -63,7 +74,7 @@ public class AgentController : AgentInputHandler
 
         if (agentValues != null)
         {
-            currentOxygen = agentValues.maxOxygen;
+            oxygen.currentOxygen = agentValues.maxOxygen;
             currentHealth = agentValues.maxHealth;
             emergencyRegenUsesRemaining = agentValues.emergencyRegenUses;
         }
@@ -86,17 +97,17 @@ public class AgentController : AgentInputHandler
         switch (resourceType)
         {
             case ResourceType.Oxygen:
-                if (lowOxygen && oxygenWarningAudio != null)
+                if (lowOxygen && oxygen.oxygenWarningAudio != null)
                 {
-                    timeInLowOxygen += Time.deltaTime;
-                    float boundryTime = currentOxygen / agentValues.maxOxygen;
-                    boundryTime /= (oxygenWarningAmount / agentValues.maxOxygen);
-                    boundryTime *= oxygenWarningDingStartRate + oxygenWarningAudio.length;
+                    oxygen.timeInLowOxygen += Time.deltaTime;
+                    float boundryTime = oxygen.currentOxygen / agentValues.maxOxygen;
+                    boundryTime /= (oxygen.oxygenWarningAmount / agentValues.maxOxygen);
+                    boundryTime *= oxygen.oxygenWarningDingStartRate + oxygen.oxygenWarningAudio.length;
 
-                    if (timeInLowOxygen > boundryTime)
+                    if (oxygen.timeInLowOxygen > boundryTime)
                     {
-                        mainAudioSource.PlayOneShot(oxygenWarningAudio);
-                        timeInLowOxygen = 0.0f;
+                        mainAudioSource.PlayOneShot(oxygen.oxygenWarningAudio);
+                        oxygen.timeInLowOxygen = 0.0f;
                     }
                 }
                 break;
@@ -185,14 +196,14 @@ public class AgentController : AgentInputHandler
         }
         else if (resourceType == ResourceType.Oxygen)
         {
-            currentOxygen = Mathf.Clamp(currentOxygen + value, 0.0f, agentValues.maxOxygen);
+            oxygen.currentOxygen = Mathf.Clamp(oxygen.currentOxygen + value, 0.0f, agentValues.maxOxygen);
 
             if (value > 0)
             {
-                if (lowOxygen && currentOxygen > oxygenWarningAmount)
+                if (lowOxygen && oxygen.currentOxygen > oxygen.oxygenWarningAmount)
                 {
                     lowOxygen = false;
-                    timeInLowOxygen = float.MaxValue;
+                    oxygen.timeInLowOxygen = float.MaxValue;
 
                     if (updateUI != null)
                     {
@@ -202,11 +213,11 @@ public class AgentController : AgentInputHandler
             }
             else
             {
-                if (currentOxygen == 0.0f)
+                if (oxygen.currentOxygen == 0.0f)
                 {
                     ChangeStat(ResourceType.Health, -(agentValues.suffocationDamage * Time.deltaTime));
                 }
-                else if (!lowOxygen && currentOxygen <= oxygenWarningAmount)
+                else if (!lowOxygen && oxygen.currentOxygen <= oxygen.oxygenWarningAmount)
                 {
                     lowOxygen = true;
 

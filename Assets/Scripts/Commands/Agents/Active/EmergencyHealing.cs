@@ -47,7 +47,7 @@ public class EmergencyHealing : ActiveCommandObject
         agentController.emergencyRegenUsesRemaining--;
 
         //Play audio.
-        agentController.mainAudioSource.PlayOneShot(agentController.emergencyRegenAudio);
+        agentController.mainAudioSource.PlayOneShot(agentController.emergencyRegen.emergencyRegenAudio);
 
         // Set agent health.
         float healthToAdd = agentValues.maxHealth - agentController.currentHealth;

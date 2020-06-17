@@ -47,7 +47,7 @@ public class RecoilWeapon : PassiveCommandObject
 
         valueDelta *= -agentInputHandler.weapons.currentWeapon.recoilForce;
 
-        agentInputHandler.agentCamera.transform.Rotate(valueDelta, 0.0f, 0.0f);
+        agentInputHandler.camera.agentCamera.transform.Rotate(valueDelta, 0.0f, 0.0f);
 
         // Prevents index errors.
         agentInputHandler.weapons.currentRecoilValue += timeDelta;

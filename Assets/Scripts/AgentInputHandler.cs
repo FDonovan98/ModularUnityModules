@@ -41,6 +41,31 @@ public class WeaponsStruct
     public int currentWeaponID = 0;
 }
 
+[System.Serializable]
+public class CameraStruct
+{
+    public Camera agentCamera;
+    public Camera mainCamera;
+    public Camera aDSCamera;
+    [HideInInspector]
+    public bool isADS = false;
+}
+
+[System.Serializable]
+public class HUDStruct
+{
+    public Canvas HUDCanvas;
+    public GameObject HUDGameObject;
+    public GameObject deathScreen;
+}
+
+[System.Serializable]
+public class AgentHitFeedbackStruct
+{
+    public AudioClip agentHitSound;
+    public GameObject agentHitParticles;
+}
+
 public class AgentInputHandler : MonoBehaviour
 {
     protected AgentController agentController;
@@ -85,31 +110,20 @@ public class AgentInputHandler : MonoBehaviour
 
     public WeaponsStruct weapons;
 
-    [Header("Armour")]
     public Armour equippedArmour = null;
 
     [Header("Reloading")]
     [HideInInspector]
     public bool isReloading = false;
 
-    [Header("Camera")]
-    public Camera agentCamera;
-    public Camera mainCamera;
-    public Camera aDSCamera;
-    [HideInInspector]
-    public bool isADS = false;
+    public CameraStruct camera;
 
-    [Header("HUD")]
-    public Canvas HUDCanvas;
-    public GameObject HUD;
-    public GameObject deathScreen;
+    public HUDStruct hUD;
 
     [HideInInspector]
     public Vector3 UIOffset = Vector3.zero;
 
-    [Header("Agent Hit Feedback")]
-    public AudioClip agentHitSound;
-    public GameObject agentHitParticles;
+    public AgentHitFeedbackStruct agentHitFeedback;
 
     [HideInInspector]
     public bool isLocalAgent = true;
@@ -119,9 +133,6 @@ public class AgentInputHandler : MonoBehaviour
     public TMP_Text interactionPromptText = null;
     [HideInInspector]
     public Image progressBar = null;
-
-    [Header("Emergency Regeneration")]
-    public AudioClip emergencyRegenAudio;
 
     // Delegates used by commands.
     // Should add a delegate for UpdateUI(GameObject UIToUpdate, float newValue = 0.0f, int newIntValue = 0), maybe.

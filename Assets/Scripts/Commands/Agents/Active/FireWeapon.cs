@@ -72,7 +72,7 @@ public class FireWeapon : ActiveCommandObject
         agentController.ChangeStat(ResourceType.MagazineAmmo, -1);
 
         RaycastHit hit;
-        if (Physics.Raycast(agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, out hit, agentInputHandler.weapons.currentWeapon.range))
+        if (Physics.Raycast(agentInputHandler.camera.agentCamera.transform.position, agentInputHandler.camera.agentCamera.transform.forward, out hit, agentInputHandler.weapons.currentWeapon.range))
         {       
             GameObjectWasHit(hit, agentInputHandler.weapons.currentWeapon);
 

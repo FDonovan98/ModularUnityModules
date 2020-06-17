@@ -177,12 +177,12 @@ public class AgentUIController : MonoBehaviour
     {
         if (oxygenUIText != null)
         {
-            oxygenUIText.text = Mathf.RoundToInt(agentController.currentOxygen / agentController.agentValues.maxOxygen * 100).ToString() + "%";
+            oxygenUIText.text = Mathf.RoundToInt(agentController.oxygen.currentOxygen / agentController.agentValues.maxOxygen * 100).ToString() + "%";
         }
 
         if (oxygenUIImage != null)
         {
-            oxygenUIImage.fillAmount = agentController.currentOxygen / agentController.agentValues.maxOxygen;
+            oxygenUIImage.fillAmount = agentController.oxygen.currentOxygen / agentController.agentValues.maxOxygen;
         }
     }
 }

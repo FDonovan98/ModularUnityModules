@@ -44,6 +44,6 @@ public class UILookLag : PassiveCommandObject
 
     void SetHudPosition(AgentInputHandler agentInputHandler)
     {
-        agentInputHandler.HUD.transform.position = agentInputHandler.HUD.transform.parent.position + agentInputHandler.UIOffset;
+        agentInputHandler.hUD.HUDGameObject.transform.position = agentInputHandler.hUD.HUDGameObject.transform.parent.position + agentInputHandler.UIOffset;
     }
 }
