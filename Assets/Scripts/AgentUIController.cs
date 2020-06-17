@@ -7,38 +7,44 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[System.Serializable]
+public class HealthUIStruct
+{
+    public TextMeshProUGUI healthUIText;
+    public Image healthUIImage;
+}
+
+[System.Serializable]
+public class OxygenUIStruct
+{
+    public TextMeshProUGUI oxygenUIText;
+    public Image oxygenUIImage;
+    public GameObject lowOxygenUIObject;
+    public GameObject oxyIsRegeningObject;
+}
+
+[System.Serializable]
+public class AbilitySymbolUI
+{
+    public GameObject ActiveSymbol;
+    public GameObject InactiveSymbol;
+}
+
 public class AgentUIController : MonoBehaviour
 {
     public AgentController agentController;
 
-    [Header("Health UI")]
-    public TextMeshProUGUI healthUIText;
-    public Image healthUIImage;
+    public HealthUIStruct healthUI;
 
-    [Header("Ammo UI")]
     public TextMeshProUGUI ammoUIText;
 
-    [Header("Oxygen UI")]
-    public TextMeshProUGUI oxygenUIText;
-    public Image oxygenUIImage;
-    public GameObject LowOxygenUIObject;
-    public GameObject oxyIsRegeningObject;
+    public OxygenUIStruct oxygenUI;
 
-    [Header("Wall Climbing UI")]
-    public GameObject wallClimbingActiveUISymbol;
-    public GameObject wallClimbingInactiveUISymbol;
+    public AbilitySymbolUI wallClimbingUI;
 
-    [Header("Emergency Regeneration UI")]
-    public GameObject emergencyRegenUnusedUISymbol;
-    public GameObject emergencyRegenUsedUISymbol;
+    public AbilitySymbolUI emergencyRegenUI;
 
-    [Header("Alien Vision UI")]
-    public GameObject alienVisionActiveUI;
-    public GameObject alienVisionInactiveUI;
-
-    [Header("Objective UI")]
-    public Image outerReticule;
-    public TMP_Text interactionText;
+    public AbilitySymbolUI specialVision;
 
     private void OnEnable()
     {
@@ -106,35 +112,35 @@ public class AgentUIController : MonoBehaviour
 
     void UpdateAlienVisionUI()
     {
-        if (alienVisionActiveUI != null)
+        if (specialVision.ActiveSymbol != null)
         {
-            alienVisionActiveUI.SetActive(agentController.alienVisionIsActive);
+            specialVision.ActiveSymbol.SetActive(agentController.alienVisionIsActive);
         }
 
-        if (alienVisionInactiveUI != null)
+        if (specialVision.InactiveSymbol != null)
         {
-            alienVisionInactiveUI.SetActive(!agentController.alienVisionIsActive);
+            specialVision.InactiveSymbol.SetActive(!agentController.alienVisionIsActive);
         }
     }
 
     void UpdateOxygenRegenUI()
     {
-        oxyIsRegeningObject.SetActive(agentController.oxygenIsRegenerating);
+        oxygenUI.oxyIsRegeningObject.SetActive(agentController.oxygenIsRegenerating);
     }
 
     void UpdateLowOxygenUI()
     {
-        LowOxygenUIObject.SetActive(agentController.lowOxygen);
+        oxygenUI.lowOxygenUIObject.SetActive(agentController.lowOxygen);
     }
 
     void UpdateEmergencyRegenUI()
     {
-        if (emergencyRegenUsedUISymbol != null && emergencyRegenUnusedUISymbol != null)
+        if (emergencyRegenUI.ActiveSymbol != null && emergencyRegenUI.InactiveSymbol != null)
         {
             if (agentController.emergencyRegenUsesRemaining <= 0)
             {
-                emergencyRegenUsedUISymbol.SetActive(true);
-                emergencyRegenUnusedUISymbol.SetActive(false);
+                emergencyRegenUI.ActiveSymbol.SetActive(true);
+                emergencyRegenUI.InactiveSymbol.SetActive(false);
             }
         }
     }
@@ -149,40 +155,40 @@ public class AgentUIController : MonoBehaviour
 
 	void UpdateWallClimbingUI()
     {
-        if (wallClimbingActiveUISymbol != null)
+        if (wallClimbingUI.ActiveSymbol != null)
         {
-            wallClimbingActiveUISymbol.SetActive(agentController.isWallClimbing);
+            wallClimbingUI.InactiveSymbol.SetActive(agentController.isWallClimbing);
         }
         
-        if (wallClimbingInactiveUISymbol != null)
+        if (wallClimbingUI.ActiveSymbol != null)
         {
-            wallClimbingInactiveUISymbol.SetActive(!agentController.isWallClimbing);
+            wallClimbingUI.InactiveSymbol.SetActive(!agentController.isWallClimbing);
         }
     }
 
     private void UpdateHealthUI()
     {
-        if (healthUIText != null)
+        if (healthUI.healthUIText != null)
         {
-            healthUIText.text = Mathf.RoundToInt(agentController.currentHealth / agentController.agentValues.maxHealth * 100).ToString() + "%";
+            healthUI.healthUIText.text = Mathf.RoundToInt(agentController.currentHealth / agentController.agentValues.maxHealth * 100).ToString() + "%";
         }
 
-        if (healthUIImage != null)
+        if (healthUI.healthUIImage != null)
         {
-            healthUIImage.fillAmount = agentController.currentHealth / agentController.agentValues.maxHealth;
+            healthUI.healthUIImage.fillAmount = agentController.currentHealth / agentController.agentValues.maxHealth;
         }
     }
 
     private void UpdateOxygenUI()
     {
-        if (oxygenUIText != null)
+        if (oxygenUI.oxygenUIText != null)
         {
-            oxygenUIText.text = Mathf.RoundToInt(agentController.oxygen.currentOxygen / agentController.agentValues.maxOxygen * 100).ToString() + "%";
+            oxygenUI.oxygenUIText.text = Mathf.RoundToInt(agentController.oxygen.currentOxygen / agentController.agentValues.maxOxygen * 100).ToString() + "%";
         }
 
-        if (oxygenUIImage != null)
+        if (oxygenUI.oxygenUIImage != null)
         {
-            oxygenUIImage.fillAmount = agentController.oxygen.currentOxygen / agentController.agentValues.maxOxygen;
+            oxygenUI.oxygenUIImage.fillAmount = agentController.oxygen.currentOxygen / agentController.agentValues.maxOxygen;
         }
     }
 }
