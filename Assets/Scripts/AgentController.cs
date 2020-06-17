@@ -23,7 +23,7 @@ public class AgentController : AgentInputHandler
 {
     public GameObject emergencyRegenParticleSystem;
     public GameObject emergencyRegenParticleSystems;
-    
+
     [Header("Oxygen")]
     public AudioClip oxygenWarningAudio = null;
     public float oxygenWarningDingStartRate = 2.0f;
@@ -68,11 +68,11 @@ public class AgentController : AgentInputHandler
             emergencyRegenUsesRemaining = agentValues.emergencyRegenUses;
         }
 
-        if (currentWeapon != null)
+        if (weapons.currentWeapon != null)
         {
-            currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
-            currentExtraAmmo = currentWeapon.magSize * 2;
-            timeSinceLastShot = currentWeapon.fireRate;
+            currentBulletsInMag = weapons.currentWeapon.bulletsInCurrentMag;
+            currentExtraAmmo = weapons.currentWeapon.magSize * 2;
+            weapons.timeSinceLastShot = weapons.currentWeapon.fireRate;
         }
 
         if (updateUI != null)
@@ -110,8 +110,8 @@ public class AgentController : AgentInputHandler
     {
         base.ChangeWeapon(weapon);
 
-        currentBulletsInMag = currentWeapon.bulletsInCurrentMag;
-        currentExtraAmmo = currentWeapon.magSize * 2;
+        currentBulletsInMag = weapons.currentWeapon.bulletsInCurrentMag;
+        currentExtraAmmo = weapons.currentWeapon.magSize * 2;
 
         if (updateUI != null)
         {
@@ -153,7 +153,7 @@ public class AgentController : AgentInputHandler
     {
         if (resourceType == ResourceType.MagazineAmmo)
         {
-            currentBulletsInMag = (int)Mathf.Clamp(currentBulletsInMag + value, 0.0f, currentWeapon.magSize);
+            currentBulletsInMag = (int)Mathf.Clamp(currentBulletsInMag + value, 0.0f, weapons.currentWeapon.magSize);
 
             if (updateUI != null)
             {

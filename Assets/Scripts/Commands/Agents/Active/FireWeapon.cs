@@ -25,7 +25,7 @@ public class FireWeapon : ActiveCommandObject
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        agentInputHandler.timeSinceLastShot += Time.deltaTime;
+        agentInputHandler.weapons.timeSinceLastShot += Time.deltaTime;
 
         if (CanFire(agentInputHandler))
         {
@@ -33,7 +33,7 @@ public class FireWeapon : ActiveCommandObject
             {
                 ActuallyFire(agent, agentInputHandler);
             }
-            else if (agentInputHandler.currentWeapon.fireMode == Weapon.FireType.FullAuto && Input.GetKey(primaryFire))
+            else if (agentInputHandler.weapons.currentWeapon.fireMode == Weapon.FireType.FullAuto && Input.GetKey(primaryFire))
             {
                 ActuallyFire(agent, agentInputHandler);
             }
@@ -46,9 +46,9 @@ public class FireWeapon : ActiveCommandObject
 
         if (agentInputHandler.allowInput && !agentController.isReloading)
         {
-            if (agentInputHandler.timeSinceLastShot > agentInputHandler.currentWeapon.fireRate)
+            if (agentInputHandler.weapons.timeSinceLastShot > agentInputHandler.weapons.currentWeapon.fireRate)
             {
-                if (agentInputHandler.currentWeapon.fireMode == Weapon.FireType.Melee || agentController.currentBulletsInMag > 0)
+                if (agentInputHandler.weapons.currentWeapon.fireMode == Weapon.FireType.Melee || agentController.currentBulletsInMag > 0)
                 {
                     return true;
                 }
@@ -67,14 +67,14 @@ public class FireWeapon : ActiveCommandObject
 
         AgentController agentController = (AgentController)agentInputHandler;
 
-        agentInputHandler.timeSinceLastShot = 0.0f;
+        agentInputHandler.weapons.timeSinceLastShot = 0.0f;
 
         agentController.ChangeStat(ResourceType.MagazineAmmo, -1);
 
         RaycastHit hit;
-        if (Physics.Raycast(agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, out hit, agentInputHandler.currentWeapon.range))
+        if (Physics.Raycast(agentInputHandler.agentCamera.transform.position, agentInputHandler.agentCamera.transform.forward, out hit, agentInputHandler.weapons.currentWeapon.range))
         {       
-            GameObjectWasHit(hit, agentInputHandler.currentWeapon);
+            GameObjectWasHit(hit, agentInputHandler.weapons.currentWeapon);
 
         }
     }

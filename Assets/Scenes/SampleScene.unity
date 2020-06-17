@@ -598,6 +598,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Capsule
       objectReference: {fileID: 0}
+    - target: {fileID: 8079664681849351251, guid: 1da076662c7a3604997252f7d1ae9031,
+        type: 3}
+      propertyPath: activeCommands.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8079664681849351251, guid: 1da076662c7a3604997252f7d1ae9031,
+        type: 3}
+      propertyPath: activeCommands.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: d0de029669f3c634b9ea4a37af5169f8,
+        type: 2}
     - target: {fileID: 8079664681849351279, guid: 1da076662c7a3604997252f7d1ae9031,
         type: 3}
       propertyPath: m_LocalPosition.x

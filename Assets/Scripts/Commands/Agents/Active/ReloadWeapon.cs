@@ -33,9 +33,9 @@ public class ReloadWeapon : ActiveCommandObject
 
             if (CanReload(agentController))
             {
-                agentInputHandler.weaponAudioSource.PlayOneShot(agentInputHandler.currentWeapon.reloadSound);
+                agentInputHandler.weapons.weaponAudioSource.PlayOneShot(agentInputHandler.weapons.currentWeapon.reloadSound);
 
-                agentInputHandler.StartCoroutine(Reload(agentInputHandler.currentWeapon.reloadDuration, agentController));
+                agentInputHandler.StartCoroutine(Reload(agentInputHandler.weapons.currentWeapon.reloadDuration, agentController));
 
                 agentInputHandler.isReloading = true;
             }
@@ -46,7 +46,7 @@ public class ReloadWeapon : ActiveCommandObject
     {
         if (agentController.currentExtraAmmo > 0)
         {
-            if (agentController.currentBulletsInMag < agentController.currentWeapon.magSize)
+            if (agentController.currentBulletsInMag < agentController.weapons.currentWeapon.magSize)
             {
                 return true;
             }
@@ -60,7 +60,7 @@ public class ReloadWeapon : ActiveCommandObject
         yield return new WaitForSeconds(reloadTime);
         int bulletsUsed;
 
-        bulletsUsed = agentController.currentWeapon.magSize - agentController.currentBulletsInMag;
+        bulletsUsed = agentController.weapons.currentWeapon.magSize - agentController.currentBulletsInMag;
 
         if (bulletsUsed > agentController.currentExtraAmmo)
         {

@@ -7,6 +7,40 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[System.Serializable]
+public class ToggleBehaviourStruct
+{
+    public Behaviour behaviourToToggle;
+    public AudioClip toggleOnSound = null;
+    public AudioClip toggleOffSound = null;
+}
+
+[System.Serializable]
+public class FootstepsStruct
+{
+    public AudioSource footstepSource = null;
+    public AudioClip[] footstepClips;
+    [HideInInspector]
+    public float timeSinceFootstep;
+}
+
+[System.Serializable]
+public class WeaponsStruct
+{
+    public Weapon currentWeapon;
+    [HideInInspector]
+    public float timeSinceLastShot = 0.0f;
+    [HideInInspector]
+    public float currentRecoilValue = 0.0f;
+    [HideInInspector]
+    public GameObject weaponObject;
+    public ParticleSystem weaponMuzzleFlash;
+    public AudioSource weaponAudioSource;
+    public Weapon[] equippedWeapons;
+    [HideInInspector]
+    public int currentWeaponID = 0;
+}
+
 public class AgentInputHandler : MonoBehaviour
 {
     protected AgentController agentController;
@@ -19,10 +53,7 @@ public class AgentInputHandler : MonoBehaviour
     public ActiveCommandObject[] activeCommands;
     public PassiveCommandObject[] passiveCommands;
 
-    [Header("Toggle Behaviour")]
-    public Behaviour behaviourToToggle;
-    public AudioClip toggleOnSound = null;
-    public AudioClip toggleOffSound = null;
+    public ToggleBehaviourStruct toggleBehaviour;
 
     [Header("Check If Grounded")]
     [HideInInspector]
@@ -46,31 +77,13 @@ public class AgentInputHandler : MonoBehaviour
     [HideInInspector]
     public Rigidbody agentRigidbody;
 
-    [Header("Footsteps")]
-    public AudioSource footstepSource = null;
-    public AudioClip[] footstepClips;
-    [ReadOnly]
-    [HideInInspector]
-    public float timeSinceFootstep;
+    public FootstepsStruct footsteps;
 
     [Header("Stairs")]
     [HideInInspector]
     public Vector3 lastVelocity = Vector3.zero;
 
-    [Header("Weapons")]
-    public Weapon currentWeapon;
-    [HideInInspector]
-    public float timeSinceLastShot = 0.0f;
-    [HideInInspector]
-    public float currentRecoilValue = 0.0f;
-    [HideInInspector]
-    public GameObject weaponObject;
-    public ParticleSystem weaponMuzzleFlash;
-    public AudioSource weaponAudioSource;
-
-    public Weapon[] equippedWeapons;
-    [HideInInspector]
-    public int currentWeaponID = 0;
+    public WeaponsStruct weapons;
 
     [Header("Armour")]
     public Armour equippedArmour = null;
@@ -90,7 +103,7 @@ public class AgentInputHandler : MonoBehaviour
     public Canvas HUDCanvas;
     public GameObject HUD;
     public GameObject deathScreen;
-    
+
     [HideInInspector]
     public Vector3 UIOffset = Vector3.zero;
 
@@ -163,8 +176,8 @@ public class AgentInputHandler : MonoBehaviour
 
     public virtual void ChangeWeapon(Weapon weapon)
     {
-        currentWeapon = weapon;
-        timeSinceLastShot = currentWeapon.fireRate;
+        weapons.currentWeapon = weapon;
+        weapons.timeSinceLastShot = weapons.currentWeapon.fireRate;
     }
 
     public void ChangeArmour(Armour armour)
@@ -264,9 +277,9 @@ public class AgentInputHandler : MonoBehaviour
 
     public AudioClip GetRandomFootstepClip()
     {
-        if (footstepClips.Length > 0)
+        if (footsteps.footstepClips.Length > 0)
         {
-            return footstepClips[Random.Range(0, footstepClips.Length - 1)];
+            return footsteps.footstepClips[Random.Range(0, footsteps.footstepClips.Length - 1)];
         }
         else
         {

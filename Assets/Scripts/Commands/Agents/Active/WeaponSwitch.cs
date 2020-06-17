@@ -28,35 +28,35 @@ public class WeaponSwitch : ActiveCommandObject
     {
         if (Input.GetKeyDown(primaryWeaponKey))
         {
-            if (agentInputHandler.currentWeaponID != 0)
+            if (agentInputHandler.weapons.currentWeaponID != 0)
             {
-                agentInputHandler.currentWeaponID = 0;
+                agentInputHandler.weapons.currentWeaponID = 0;
                 SwitchWeapon(agentInputHandler);
             }
         }
         else if (Input.GetKeyDown(secondaryWeaponKey))
         {
-            if (agentInputHandler.currentWeaponID != 1)
+            if (agentInputHandler.weapons.currentWeaponID != 1)
             {
-                agentInputHandler.currentWeaponID = 1;
+                agentInputHandler.weapons.currentWeaponID = 1;
                 SwitchWeapon(agentInputHandler);
             }
         }
         else if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            agentInputHandler.currentWeaponID += 1;
-            if (agentInputHandler.currentWeaponID >= agentInputHandler.equippedWeapons.Length)
+            agentInputHandler.weapons.currentWeaponID += 1;
+            if (agentInputHandler.weapons.currentWeaponID >= agentInputHandler.weapons.equippedWeapons.Length)
             {
-                agentInputHandler.currentWeaponID = 0;
+                agentInputHandler.weapons.currentWeaponID = 0;
             }
             SwitchWeapon(agentInputHandler);
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            agentInputHandler.currentWeaponID -= 1;
-            if (agentInputHandler.currentWeaponID < 0)
+            agentInputHandler.weapons.currentWeaponID -= 1;
+            if (agentInputHandler.weapons.currentWeaponID < 0)
             {
-                agentInputHandler.currentWeaponID = agentInputHandler.equippedWeapons.Length - 1;
+                agentInputHandler.weapons.currentWeaponID = agentInputHandler.weapons.equippedWeapons.Length - 1;
             }
             SwitchWeapon(agentInputHandler);
         }
@@ -65,12 +65,12 @@ public class WeaponSwitch : ActiveCommandObject
     private void SwitchWeapon(AgentInputHandler agentInputHandler)
     {
         MeshFilter mesh;
-        mesh = agentInputHandler.weaponObject.GetComponent<MeshFilter>();
+        mesh = agentInputHandler.weapons.weaponObject.GetComponent<MeshFilter>();
 
-        agentInputHandler.currentWeapon = agentInputHandler.equippedWeapons[agentInputHandler.currentWeaponID];
-        if (mesh != null && agentInputHandler.currentWeapon.weaponMesh != null)
+        agentInputHandler.weapons.currentWeapon = agentInputHandler.weapons.equippedWeapons[agentInputHandler.weapons.currentWeaponID];
+        if (mesh != null && agentInputHandler.weapons.currentWeapon.weaponMesh != null)
         {
-            mesh.mesh = agentInputHandler.currentWeapon.weaponMesh;
+            mesh.mesh = agentInputHandler.weapons.currentWeapon.weaponMesh;
         }
         else
         {

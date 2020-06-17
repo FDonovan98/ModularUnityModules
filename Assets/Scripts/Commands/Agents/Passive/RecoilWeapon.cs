@@ -16,13 +16,13 @@ public class RecoilWeapon : PassiveCommandObject
 
     void RunCommandOnWeaponFired(AgentInputHandler agentInputHandler)
     {
-        HandleRecoil(agentInputHandler, agentInputHandler.currentWeapon.upForceStep);
+        HandleRecoil(agentInputHandler, agentInputHandler.weapons.currentWeapon.upForceStep);
     }
 
     void RunCommandOnUpdate(GameObject agent, AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
         float timeDelta;
-        timeDelta = -Time.deltaTime / agentInputHandler.currentWeapon.downForceDuration;
+        timeDelta = -Time.deltaTime / agentInputHandler.weapons.currentWeapon.downForceDuration;
 
         HandleRecoil(agentInputHandler, timeDelta);
     }
@@ -30,27 +30,27 @@ public class RecoilWeapon : PassiveCommandObject
     void HandleRecoil(AgentInputHandler agentInputHandler, float timeDelta)
     {
 
-        AnimationCurve weaponRecoilCurveUp = agentInputHandler.currentWeapon.recoilCurveUp;
-        AnimationCurve weaponRecoilCurveDown = agentInputHandler.currentWeapon.recoilCurveDown;
+        AnimationCurve weaponRecoilCurveUp = agentInputHandler.weapons.currentWeapon.recoilCurveUp;
+        AnimationCurve weaponRecoilCurveDown = agentInputHandler.weapons.currentWeapon.recoilCurveDown;
 
         float valueDelta;
 
         if (timeDelta > 0)
         {
-            valueDelta = weaponRecoilCurveUp.Evaluate(agentInputHandler.currentRecoilValue + timeDelta) - weaponRecoilCurveUp.Evaluate(agentInputHandler.currentRecoilValue);
+            valueDelta = weaponRecoilCurveUp.Evaluate(agentInputHandler.weapons.currentRecoilValue + timeDelta) - weaponRecoilCurveUp.Evaluate(agentInputHandler.weapons.currentRecoilValue);
         }
         else
         {
-            valueDelta = weaponRecoilCurveDown.Evaluate(agentInputHandler.currentRecoilValue + timeDelta) - weaponRecoilCurveDown.Evaluate(agentInputHandler.currentRecoilValue);
+            valueDelta = weaponRecoilCurveDown.Evaluate(agentInputHandler.weapons.currentRecoilValue + timeDelta) - weaponRecoilCurveDown.Evaluate(agentInputHandler.weapons.currentRecoilValue);
         }
 
 
-        valueDelta *= -agentInputHandler.currentWeapon.recoilForce;
+        valueDelta *= -agentInputHandler.weapons.currentWeapon.recoilForce;
 
         agentInputHandler.agentCamera.transform.Rotate(valueDelta, 0.0f, 0.0f);
 
         // Prevents index errors.
-        agentInputHandler.currentRecoilValue += timeDelta;
-        agentInputHandler.currentRecoilValue = Mathf.Clamp(agentInputHandler.currentRecoilValue, 0.0f, 1.0f - agentInputHandler.currentWeapon.upForceStep);
+        agentInputHandler.weapons.currentRecoilValue += timeDelta;
+        agentInputHandler.weapons.currentRecoilValue = Mathf.Clamp(agentInputHandler.weapons.currentRecoilValue, 0.0f, 1.0f - agentInputHandler.weapons.currentWeapon.upForceStep);
     }
 }

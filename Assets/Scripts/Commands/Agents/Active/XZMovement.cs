@@ -139,20 +139,20 @@ public class XZMovement : ActiveCommandObject
     {
         if (agentInputHandler.agentRigidbody.velocity.magnitude > 0)
             {
-                if (agentInputHandler.footstepSource != null && !agentInputHandler.footstepSource.isPlaying)
+                if (agentInputHandler.footsteps.footstepSource != null && !agentInputHandler.footsteps.footstepSource.isPlaying)
                 {
-                    if (agentInputHandler.timeSinceFootstep > agentValues.footstepDelay)
+                    if (agentInputHandler.footsteps.timeSinceFootstep > agentValues.footstepDelay)
                     {
                         PlayFootstep(agentInputHandler);
-                        agentInputHandler.timeSinceFootstep = 0.0f;
+                        agentInputHandler.footsteps.timeSinceFootstep = 0.0f;
                     }
                     else
                     {
-                        agentInputHandler.timeSinceFootstep += Time.deltaTime;
+                        agentInputHandler.footsteps.timeSinceFootstep += Time.deltaTime;
                     }
                 }
             }
-            else if (agentInputHandler.footstepSource.clip != null && agentInputHandler.footstepSource.isPlaying)
+            else if (agentInputHandler.footsteps.footstepSource.clip != null && agentInputHandler.footsteps.footstepSource.isPlaying)
             {
                 CancelFootstep(agentInputHandler);
             }
@@ -160,13 +160,13 @@ public class XZMovement : ActiveCommandObject
 
     public void PlayFootstep(AgentInputHandler agentInputHandler)
     {
-        agentInputHandler.footstepSource.clip = agentInputHandler.GetRandomFootstepClip();
-        agentInputHandler.footstepSource.Play();
+        agentInputHandler.footsteps.footstepSource.clip = agentInputHandler.GetRandomFootstepClip();
+        agentInputHandler.footsteps.footstepSource.Play();
     }
 
     public void CancelFootstep(AgentInputHandler agentInputHandler)
     {
-        agentInputHandler.footstepSource.Stop();
-        agentInputHandler.footstepSource.clip = null;
+        agentInputHandler.footsteps.footstepSource.Stop();
+        agentInputHandler.footsteps.footstepSource.clip = null;
     }
 }
