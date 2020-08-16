@@ -42,7 +42,7 @@ public class AgentController : AgentInputHandler
 {
     public EmergencyRegenStrut emergencyRegen;
 
-    public OxygenStruct oxygen;
+    public OxygenStruct oxygen = new OxygenStruct();
 
     [Header("Current Stats")]
     [HideInInspector]

@@ -94,7 +94,7 @@ public class OutlineObjectsOnKeyPress : ActiveCommandObject
 
                 _outlineMaterial = new Material(Shader.Find("Hidden/OutlineHighlight"));
 
-                _camera = agentInputHandler.camera.agentCamera;
+                _camera = agentInputHandler.cameraList.agentCamera;
                 _camera.depthTextureMode = DepthTextureMode.Depth;
                 _camera.AddCommandBuffer(BufferDrawEvent, _commandBuffer);
 

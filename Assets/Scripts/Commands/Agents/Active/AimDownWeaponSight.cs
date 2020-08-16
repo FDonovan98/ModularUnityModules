@@ -30,7 +30,7 @@ public class AimDownWeaponSight : ActiveCommandObject
         {
             if (Input.GetKeyDown(aimDownSight))
             {
-                if (agentInputHandler.camera.aDSCamera.enabled == true)
+                if (agentInputHandler.cameraList.aDSCamera.enabled == true)
                 {
                     ToggleADS(agentInputHandler, false);
                 }
@@ -55,20 +55,20 @@ public class AimDownWeaponSight : ActiveCommandObject
 
     void ToggleADS(AgentInputHandler agentInputHandler, bool toggle)
     {
-        agentInputHandler.camera.isADS = toggle;
+        agentInputHandler.cameraList.isADS = toggle;
 
         if (toggle)
         {
-            agentInputHandler.camera.agentCamera = agentInputHandler.camera.aDSCamera;
+            agentInputHandler.cameraList.agentCamera = agentInputHandler.cameraList.aDSCamera;
         }
         else
         {
-            agentInputHandler.camera.agentCamera = agentInputHandler.camera.mainCamera;
+            agentInputHandler.cameraList.agentCamera = agentInputHandler.cameraList.mainCamera;
         }
 
-        agentInputHandler.hUD.HUDCanvas.worldCamera = agentInputHandler.camera.agentCamera;
+        agentInputHandler.hUD.HUDCanvas.worldCamera = agentInputHandler.cameraList.agentCamera;
 
-        agentInputHandler.camera.mainCamera.enabled = !toggle;
-        agentInputHandler.camera.aDSCamera.enabled = toggle;   
+        agentInputHandler.cameraList.mainCamera.enabled = !toggle;
+        agentInputHandler.cameraList.aDSCamera.enabled = toggle;   
     }
 }

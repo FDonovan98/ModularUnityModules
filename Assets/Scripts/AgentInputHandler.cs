@@ -116,7 +116,7 @@ public class AgentInputHandler : MonoBehaviour
     [HideInInspector]
     public bool isReloading = false;
 
-    public CameraStruct camera;
+    public CameraStruct cameraList;
 
     public HUDStruct hUD;
 
@@ -160,7 +160,6 @@ public class AgentInputHandler : MonoBehaviour
     public RunCommandOnAgentHasBeenHit runCommandOnAgentHasBeenHit;
     public delegate void RunCommandOnCameraMovement(Vector3 cameraMovement, AgentInputHandler agentInputHandler, AgentValues agentValues);
     public RunCommandOnCameraMovement runCommandOnCameraMovement;
-
 
     private void Start()
     {
