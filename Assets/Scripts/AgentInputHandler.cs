@@ -271,6 +271,23 @@ public class AgentInputHandler : MonoBehaviour
         Cursor.visible = false;
 
         agentRigidbody = this.gameObject.GetComponent<Rigidbody>();
+
+        if (cameraList.agentCamera == null)
+        {
+            if (cameraList.mainCamera != null)
+            {
+                cameraList.agentCamera = cameraList.mainCamera;
+            }
+            else
+            {
+                cameraList.agentCamera = GetComponentInChildren<Camera>();
+            }
+        }
+
+        if (cameraList.mainCamera == null)
+        {
+            cameraList.mainCamera = cameraList.agentCamera;
+        }
     }
 
     public void ChangeMovementSpeedModifier(float value, bool multiply)
