@@ -137,9 +137,11 @@ public class XZMovement : ActiveCommandObject
 
     void HandleFootsteps(AgentInputHandler agentInputHandler, AgentValues agentValues)
     {
-        if (agentInputHandler.agentRigidbody.velocity.magnitude > 0)
+        if (agentInputHandler.footsteps.footstepSource != null)
+        {
+            if (agentInputHandler.agentRigidbody.velocity.magnitude > 0)
             {
-                if (agentInputHandler.footsteps.footstepSource != null && !agentInputHandler.footsteps.footstepSource.isPlaying)
+                if (!agentInputHandler.footsteps.footstepSource.isPlaying)
                 {
                     if (agentInputHandler.footsteps.timeSinceFootstep > agentValues.footstepDelay)
                     {
@@ -156,6 +158,8 @@ public class XZMovement : ActiveCommandObject
             {
                 CancelFootstep(agentInputHandler);
             }
+
+        }
     }
 
     public void PlayFootstep(AgentInputHandler agentInputHandler)

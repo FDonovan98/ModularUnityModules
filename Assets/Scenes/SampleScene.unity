@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311926, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -121,6 +121,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!20 &131504328 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8079664681102463950, guid: 1da076662c7a3604997252f7d1ae9031,
+    type: 3}
+  m_PrefabInstance: {fileID: 1412325796}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &476204265
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,6 +607,11 @@ PrefabInstance:
     - target: {fileID: 8079664681849351251, guid: 1da076662c7a3604997252f7d1ae9031,
         type: 3}
       propertyPath: activeCommands.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8079664681849351251, guid: 1da076662c7a3604997252f7d1ae9031,
+        type: 3}
+      propertyPath: passiveCommands.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8079664681849351251, guid: 1da076662c7a3604997252f7d1ae9031,
@@ -608,6 +619,34 @@ PrefabInstance:
       propertyPath: activeCommands.Array.data[0]
       value: 
       objectReference: {fileID: 11400000, guid: d0de029669f3c634b9ea4a37af5169f8,
+        type: 2}
+    - target: {fileID: 8079664681849351251, guid: 1da076662c7a3604997252f7d1ae9031,
+        type: 3}
+      propertyPath: cameraList.agentCamera
+      value: 
+      objectReference: {fileID: 131504328}
+    - target: {fileID: 8079664681849351251, guid: 1da076662c7a3604997252f7d1ae9031,
+        type: 3}
+      propertyPath: cameraList.mainCamera
+      value: 
+      objectReference: {fileID: 131504328}
+    - target: {fileID: 8079664681849351251, guid: 1da076662c7a3604997252f7d1ae9031,
+        type: 3}
+      propertyPath: activeCommands.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: f946eded414e590468e2b04a3bee2f3f,
+        type: 2}
+    - target: {fileID: 8079664681849351251, guid: 1da076662c7a3604997252f7d1ae9031,
+        type: 3}
+      propertyPath: activeCommands.Array.data[2]
+      value: 
+      objectReference: {fileID: 11400000, guid: 7b8ea853d6a864f4786f61c140a01ac0,
+        type: 2}
+    - target: {fileID: 8079664681849351251, guid: 1da076662c7a3604997252f7d1ae9031,
+        type: 3}
+      propertyPath: passiveCommands.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 71f33553218a54842a9ff87eb3f2db5b,
         type: 2}
     - target: {fileID: 8079664681849351279, guid: 1da076662c7a3604997252f7d1ae9031,
         type: 3}
